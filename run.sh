@@ -1,0 +1,32 @@
+# streamlit run app.py --server.port 8052 --server.maxUploadSize  20
+python3 -m paddle.distributed.launch --devices 0,1,2,3 run_mrc.py \
+  --model_name_or_path ernie-layoutx-base-uncased \
+  --output_dir ./models/fidelity_save_100/ \
+  --dataset_name fidelity \
+  --do_train \
+  --do_eval \
+  --lang "en" \
+  --num_train_epochs 4 \
+  --lr_scheduler_type linear \
+  --warmup_ratio 0.05 \
+  --weight_decay 0.05 \
+  --eval_steps 100 \
+  --save_steps 100 \
+  --save_total_limit 2 \
+  --load_best_model_at_end \
+  --pattern "mrc" \
+  --use_segment_box false \
+  --return_entity_level_metrics True \
+  --overwrite_cache false \
+  --doc_stride 128 \
+  --target_size 1000 \
+  --per_device_train_batch_size 6 \
+  --per_device_eval_batch_size 6 \
+  --learning_rate 2e-5 \
+  --preprocessing_num_workers 32 \
+  --save_total_limit 1 \
+  --train_nshard 16 \
+  --seed 1000 \
+  --metric_for_best_model anls \
+  --greater_is_better true \
+  --overwrite_output_dir

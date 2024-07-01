@@ -1,0 +1,16 @@
+colorlog
+datasets
+fastapi
+huggingface-hub
+jieba
+opencv-python
+paddleocr
+paddlepaddle
+scipy
+sentencepiece
+seqeval
+six
+editdistance
+streamlit
+streamlit_tags
+pdf2image

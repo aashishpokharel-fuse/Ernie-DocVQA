@@ -1,0 +1,1523 @@
+[33m[2023-11-10 08:01:33,667] [ WARNING][0m - Detected that datasets module was imported before paddlenlp. This may cause PaddleNLP datasets to be unavalible in intranet. Please import paddlenlp before datasets module to avoid download issues[0m
+[33m[2023-11-10 08:01:34,738] [ WARNING][0m - evaluation_strategy reset to IntervalStrategy.STEPS for do_eval is True. you can also set evaluation_strategy='epoch'.[0m
+======================= Modified FLAGS detected =======================
+FLAGS(name='FLAGS_selected_gpus', current_value='1', default_value='')
+=======================================================================
+I1110 08:01:34.738903 45209 tcp_utils.cc:130] Successfully connected to 172.31.1.102:44250
+Traceback (most recent call last):
+  File "run_mrc.py", line 243, in <module>
+    main()
+  File "run_mrc.py", line 35, in main
+    model_args, data_args, training_args = parser.parse_args_into_dataclasses()
+  File "/home/ubuntu/Demo-with-user-question/paddlenlp/trainer/argparser.py", line 223, in parse_args_into_dataclasses
+    obj = dtype(**inputs)
+  File "<string>", line 83, in __init__
+  File "/home/ubuntu/Demo-with-user-question/paddlenlp/trainer/training_args.py", line 942, in __post_init__
+    paddle.distributed.init_parallel_env()
+  File "/home/ubuntu/.local/lib/python3.8/site-packages/paddle/distributed/parallel.py", line 1100, in init_parallel_env
+    paddle.distributed.barrier(group=group)
+  File "/home/ubuntu/.local/lib/python3.8/site-packages/paddle/distributed/communication/group.py", line 328, in barrier
+    task = group.process_group.barrier(device_id)
+ValueError: (InvalidArgument) TCP receive error. Details: Success.
+  [Hint: Expected byte_received > 0, but received byte_received:0 <= 0:0.] (at ../paddle/phi/core/distributed/store/tcp_utils.h:107)
+
+[33m[2023-11-10 08:29:08,518] [ WARNING][0m - Detected that datasets module was imported before paddlenlp. This may cause PaddleNLP datasets to be unavalible in intranet. Please import paddlenlp before datasets module to avoid download issues[0m
+usage: run_mrc.py [-h] --model_name_or_path MODEL_NAME_OR_PATH
+                  [--config_name CONFIG_NAME]
+                  [--tokenizer_name TOKENIZER_NAME] [--cache_dir CACHE_DIR]
+                  [--task_name TASK_NAME] [--dataset_name DATASET_NAME]
+                  [--dataset_config_name DATASET_CONFIG_NAME]
+                  [--overwrite_cache [OVERWRITE_CACHE]]
+                  [--preprocessing_num_workers PREPROCESSING_NUM_WORKERS]
+                  [--max_seq_length MAX_SEQ_LENGTH] [--doc_stride DOC_STRIDE]
+                  [--target_size TARGET_SIZE]
+                  [--pad_to_max_length [PAD_TO_MAX_LENGTH]]
+                  [--no_pad_to_max_length]
+                  [--max_train_samples MAX_TRAIN_SAMPLES]
+                  [--max_val_samples MAX_VAL_SAMPLES]
+                  [--max_test_samples MAX_TEST_SAMPLES]
+                  [--label_all_tokens [LABEL_ALL_TOKENS]]
+                  [--return_entity_level_metrics [RETURN_ENTITY_LEVEL_METRICS]]
+                  [--train_log_file TRAIN_LOG_FILE]
+                  [--train_nshard TRAIN_NSHARD]
+                  [--use_segment_box [USE_SEGMENT_BOX]]
+                  [--task_type TASK_TYPE] [--pattern PATTERN]
+                  [--rst_converter RST_CONVERTER] [--lang LANG] --output_dir
+                  OUTPUT_DIR [--overwrite_output_dir [OVERWRITE_OUTPUT_DIR]]
+                  [--do_train [DO_TRAIN]] [--do_eval [DO_EVAL]]
+                  [--do_predict [DO_PREDICT]] [--do_export [DO_EXPORT]]
+                  [--evaluation_strategy {no,steps,epoch}]
+                  [--prediction_loss_only [PREDICTION_LOSS_ONLY]]
+                  [--per_device_train_batch_size PER_DEVICE_TRAIN_BATCH_SIZE]
+                  [--per_device_eval_batch_size PER_DEVICE_EVAL_BATCH_SIZE]
+                  [--gradient_accumulation_steps GRADIENT_ACCUMULATION_STEPS]
+                  [--eval_accumulation_steps EVAL_ACCUMULATION_STEPS]
+                  [--learning_rate LEARNING_RATE]
+                  [--weight_decay WEIGHT_DECAY] [--adam_beta1 ADAM_BETA1]
+                  [--adam_beta2 ADAM_BETA2] [--adam_epsilon ADAM_EPSILON]
+                  [--max_grad_norm MAX_GRAD_NORM]
+                  [--num_train_epochs NUM_TRAIN_EPOCHS]
+                  [--max_steps MAX_STEPS]
+                  [--lr_scheduler_type LR_SCHEDULER_TYPE]
+                  [--warmup_ratio WARMUP_RATIO] [--warmup_steps WARMUP_STEPS]
+                  [--num_cycles NUM_CYCLES] [--lr_end LR_END] [--power POWER]
+                  [--log_on_each_node [LOG_ON_EACH_NODE]]
+                  [--no_log_on_each_node] [--logging_dir LOGGING_DIR]
+                  [--logging_strategy {no,steps,epoch}]
+                  [--logging_first_step [LOGGING_FIRST_STEP]]
+                  [--logging_steps LOGGING_STEPS]
+                  [--save_strategy {no,steps,epoch}] [--save_steps SAVE_STEPS]
+                  [--save_total_limit SAVE_TOTAL_LIMIT]
+                  [--save_on_each_node [SAVE_ON_EACH_NODE]]
+                  [--no_cuda [NO_CUDA]] [--seed SEED] [--bf16 [BF16]]
+                  [--fp16 [FP16]] [--fp16_opt_level FP16_OPT_LEVEL]
+                  [--amp_master_grad [AMP_MASTER_GRAD]]
+                  [--bf16_full_eval [BF16_FULL_EVAL]]
+                  [--fp16_full_eval [FP16_FULL_EVAL]]
+                  [--amp_custom_black_list AMP_CUSTOM_BLACK_LIST [AMP_CUSTOM_BLACK_LIST ...]]
+                  [--amp_custom_white_list AMP_CUSTOM_WHITE_LIST [AMP_CUSTOM_WHITE_LIST ...]]
+                  [--sharding SHARDING] [--sharding_degree SHARDING_DEGREE]
+                  [--sharding_parallel_degree SHARDING_PARALLEL_DEGREE]
+                  [--save_sharded_model [SAVE_SHARDED_MODEL]]
+                  [--load_sharded_model [LOAD_SHARDED_MODEL]]
+                  [--tensor_parallel_degree TENSOR_PARALLEL_DEGREE]
+                  [--pipeline_parallel_degree PIPELINE_PARALLEL_DEGREE]
+                  [--pipeline_parallel_config PIPELINE_PARALLEL_CONFIG]
+                  [--sharding_parallel_config SHARDING_PARALLEL_CONFIG]
+                  [--hybrid_parallel_topo_order HYBRID_PARALLEL_TOPO_ORDER]
+                  [--recompute [RECOMPUTE]] [--scale_loss SCALE_LOSS]
+                  [--minimum_eval_times MINIMUM_EVAL_TIMES]
+                  [--local_rank LOCAL_RANK]
+                  [--dataloader_drop_last [DATALOADER_DROP_LAST]]
+                  [--eval_steps EVAL_STEPS]
+                  [--max_evaluate_steps MAX_EVALUATE_STEPS]
+                  [--dataloader_num_workers DATALOADER_NUM_WORKERS]
+                  [--past_index PAST_INDEX] [--run_name RUN_NAME]
+                  [--device DEVICE] [--disable_tqdm DISABLE_TQDM]
+                  [--remove_unused_columns [REMOVE_UNUSED_COLUMNS]]
+                  [--no_remove_unused_columns]
+                  [--label_names LABEL_NAMES [LABEL_NAMES ...]]
+                  [--load_best_model_at_end [LOAD_BEST_MODEL_AT_END]]
+                  [--metric_for_best_model METRIC_FOR_BEST_MODEL]
+                  [--greater_is_better GREATER_IS_BETTER]
+                  [--ignore_data_skip [IGNORE_DATA_SKIP]] [--optim OPTIM]
+                  [--report_to REPORT_TO [REPORT_TO ...]]
+                  [--resume_from_checkpoint RESUME_FROM_CHECKPOINT]
+                  [--skip_memory_metrics [SKIP_MEMORY_METRICS]]
+                  [--no_skip_memory_metrics]
+                  [--flatten_param_grads [FLATTEN_PARAM_GRADS]]
+                  [--lazy_data_processing [LAZY_DATA_PROCESSING]]
+                  [--no_lazy_data_processing]
+                  [--skip_profile_timer [SKIP_PROFILE_TIMER]]
+                  [--no_skip_profile_timer]
+run_mrc.py: error: the following arguments are required: --model_name_or_path, --output_dir
+[33m[2023-11-10 08:29:32,351] [ WARNING][0m - Detected that datasets module was imported before paddlenlp. This may cause PaddleNLP datasets to be unavalible in intranet. Please import paddlenlp before datasets module to avoid download issues[0m
+[33m[2023-11-10 08:29:33,425] [ WARNING][0m - evaluation_strategy reset to IntervalStrategy.STEPS for do_eval is True. you can also set evaluation_strategy='epoch'.[0m
+======================= Modified FLAGS detected =======================
+FLAGS(name='FLAGS_selected_gpus', current_value='1', default_value='')
+=======================================================================
+I1110 08:29:33.426568 50890 tcp_utils.cc:107] Retry to connect to 172.31.1.102:63781 while the server is not yet listening.
+I1110 08:29:36.426784 50890 tcp_utils.cc:130] Successfully connected to 172.31.1.102:63781
+Traceback (most recent call last):
+  File "run_mrc.py", line 243, in <module>
+    main()
+  File "run_mrc.py", line 35, in main
+    model_args, data_args, training_args = parser.parse_args_into_dataclasses()
+  File "/home/ubuntu/Demo-with-user-question/paddlenlp/trainer/argparser.py", line 223, in parse_args_into_dataclasses
+    obj = dtype(**inputs)
+  File "<string>", line 83, in __init__
+  File "/home/ubuntu/Demo-with-user-question/paddlenlp/trainer/training_args.py", line 942, in __post_init__
+    paddle.distributed.init_parallel_env()
+  File "/home/ubuntu/.local/lib/python3.8/site-packages/paddle/distributed/parallel.py", line 1100, in init_parallel_env
+    paddle.distributed.barrier(group=group)
+  File "/home/ubuntu/.local/lib/python3.8/site-packages/paddle/distributed/communication/group.py", line 328, in barrier
+    task = group.process_group.barrier(device_id)
+ValueError: (InvalidArgument) TCP receive error. Details: Connection refused.
+  [Hint: Expected byte_received > 0, but received byte_received:0 <= 0:0.] (at ../paddle/phi/core/distributed/store/tcp_utils.h:107)
+
+[33m[2023-11-10 08:46:57,399] [ WARNING][0m - Detected that datasets module was imported before paddlenlp. This may cause PaddleNLP datasets to be unavalible in intranet. Please import paddlenlp before datasets module to avoid download issues[0m
+[33m[2023-11-10 08:46:58,471] [ WARNING][0m - evaluation_strategy reset to IntervalStrategy.STEPS for do_eval is True. you can also set evaluation_strategy='epoch'.[0m
+======================= Modified FLAGS detected =======================
+FLAGS(name='FLAGS_selected_gpus', current_value='1', default_value='')
+=======================================================================
+I1110 08:46:58.472548 55308 tcp_utils.cc:130] Successfully connected to 172.31.1.102:39256
+Traceback (most recent call last):
+  File "run_mrc.py", line 243, in <module>
+    main()
+  File "run_mrc.py", line 35, in main
+    model_args, data_args, training_args = parser.parse_args_into_dataclasses()
+  File "/home/ubuntu/Demo-with-user-question/paddlenlp/trainer/argparser.py", line 223, in parse_args_into_dataclasses
+    obj = dtype(**inputs)
+  File "<string>", line 83, in __init__
+  File "/home/ubuntu/Demo-with-user-question/paddlenlp/trainer/training_args.py", line 942, in __post_init__
+    paddle.distributed.init_parallel_env()
+  File "/home/ubuntu/.local/lib/python3.8/site-packages/paddle/distributed/parallel.py", line 1100, in init_parallel_env
+    paddle.distributed.barrier(group=group)
+  File "/home/ubuntu/.local/lib/python3.8/site-packages/paddle/distributed/communication/group.py", line 328, in barrier
+    task = group.process_group.barrier(device_id)
+ValueError: (InvalidArgument) TCP receive error. Details: Success.
+  [Hint: Expected byte_received > 0, but received byte_received:0 <= 0:0.] (at ../paddle/phi/core/distributed/store/tcp_utils.h:107)
+
+[33m[2023-11-10 08:50:54,023] [ WARNING][0m - Detected that datasets module was imported before paddlenlp. This may cause PaddleNLP datasets to be unavalible in intranet. Please import paddlenlp before datasets module to avoid download issues[0m
+[33m[2023-11-10 08:50:55,093] [ WARNING][0m - evaluation_strategy reset to IntervalStrategy.STEPS for do_eval is True. you can also set evaluation_strategy='epoch'.[0m
+======================= Modified FLAGS detected =======================
+FLAGS(name='FLAGS_selected_gpus', current_value='1', default_value='')
+=======================================================================
+I1110 08:50:55.094223 56862 tcp_utils.cc:107] Retry to connect to 172.31.1.102:54877 while the server is not yet listening.
+I1110 08:50:58.094437 56862 tcp_utils.cc:130] Successfully connected to 172.31.1.102:54877
+W1110 08:51:00.329802 56862 gpu_resources.cc:119] Please NOTE: device: 1, GPU Compute Capability: 7.5, Driver API Version: 12.3, Runtime API Version: 11.7
+W1110 08:51:00.336045 56862 gpu_resources.cc:149] device: 1, cuDNN Version: 8.5.
+[32m[2023-11-10 08:51:00,948] [    INFO][0m - The default value for the training argument `--report_to` will change in v5 (from all installed integrations to none). In v5, you will need to use `--report_to all` to get the same behavior as now. You should start updating your code and make this info disappear :-).[0m
+[32m[2023-11-10 08:51:00,948] [    INFO][0m - ============================================================[0m
+[32m[2023-11-10 08:51:00,949] [    INFO][0m -      Model Configuration Arguments      [0m
+[32m[2023-11-10 08:51:00,949] [    INFO][0m - paddle commit id              : 3a1b1659a405a044ce806fbe027cc146f1193e6d[0m
+[32m[2023-11-10 08:51:00,949] [    INFO][0m - cache_dir                     : None[0m
+[32m[2023-11-10 08:51:00,949] [    INFO][0m - config_name                   : None[0m
+[32m[2023-11-10 08:51:00,949] [    INFO][0m - model_name_or_path            : ernie-layoutx-base-uncased[0m
+[32m[2023-11-10 08:51:00,949] [    INFO][0m - tokenizer_name                : None[0m
+[32m[2023-11-10 08:51:00,949] [    INFO][0m - [0m
+[32m[2023-11-10 08:51:00,949] [    INFO][0m - ============================================================[0m
+[32m[2023-11-10 08:51:00,949] [    INFO][0m -       Data Configuration Arguments      [0m
+[32m[2023-11-10 08:51:00,949] [    INFO][0m - paddle commit id              : 3a1b1659a405a044ce806fbe027cc146f1193e6d[0m
+[32m[2023-11-10 08:51:00,949] [    INFO][0m - dataset_config_name           : None[0m
+[32m[2023-11-10 08:51:00,949] [    INFO][0m - dataset_name                  : fidelity[0m
+[32m[2023-11-10 08:51:00,950] [    INFO][0m - doc_stride                    : 128[0m
+[32m[2023-11-10 08:51:00,950] [    INFO][0m - label_all_tokens              : False[0m
+[32m[2023-11-10 08:51:00,950] [    INFO][0m - lang                          : en[0m
+[32m[2023-11-10 08:51:00,950] [    INFO][0m - max_seq_length                : 512[0m
+[32m[2023-11-10 08:51:00,950] [    INFO][0m - max_test_samples              : None[0m
+[32m[2023-11-10 08:51:00,950] [    INFO][0m - max_train_samples             : None[0m
+[32m[2023-11-10 08:51:00,950] [    INFO][0m - max_val_samples               : None[0m
+[32m[2023-11-10 08:51:00,950] [    INFO][0m - overwrite_cache               : False[0m
+[32m[2023-11-10 08:51:00,950] [    INFO][0m - pad_to_max_length             : True[0m
+[32m[2023-11-10 08:51:00,950] [    INFO][0m - pattern                       : mrc[0m
+[32m[2023-11-10 08:51:00,950] [    INFO][0m - preprocessing_num_workers     : 32[0m
+[32m[2023-11-10 08:51:00,950] [    INFO][0m - return_entity_level_metrics   : False[0m
+[32m[2023-11-10 08:51:00,950] [    INFO][0m - rst_converter                 : None[0m
+[32m[2023-11-10 08:51:00,950] [    INFO][0m - target_size                   : 1000[0m
+[32m[2023-11-10 08:51:00,950] [    INFO][0m - task_name                     : ner[0m
+[32m[2023-11-10 08:51:00,950] [    INFO][0m - task_type                     : ner[0m
+[32m[2023-11-10 08:51:00,950] [    INFO][0m - train_log_file                : None[0m
+[32m[2023-11-10 08:51:00,951] [    INFO][0m - train_nshard                  : 16[0m
+[32m[2023-11-10 08:51:00,951] [    INFO][0m - use_segment_box               : False[0m
+[32m[2023-11-10 08:51:00,951] [    INFO][0m - [0m
+[32m[2023-11-10 08:51:00,995] [    INFO][0m - We are using (<class 'paddlenlp.transformers.ernie_layout.tokenizer.ErnieLayoutTokenizer'>, False) to load 'ernie-layoutx-base-uncased'.[0m
+[32m[2023-11-10 08:51:00,995] [    INFO][0m - Already cached /home/ubuntu/.paddlenlp/models/ernie-layoutx-base-uncased/vocab.txt[0m
+[32m[2023-11-10 08:51:00,995] [    INFO][0m - Already cached /home/ubuntu/.paddlenlp/models/ernie-layoutx-base-uncased/sentencepiece.bpe.model[0m
+[32m[2023-11-10 08:51:01,566] [    INFO][0m - tokenizer config file saved in /home/ubuntu/.paddlenlp/models/ernie-layoutx-base-uncased/tokenizer_config.json[0m
+[32m[2023-11-10 08:51:01,566] [    INFO][0m - Special tokens file saved in /home/ubuntu/.paddlenlp/models/ernie-layoutx-base-uncased/special_tokens_map.json[0m
+[32m[2023-11-10 08:51:01,567] [    INFO][0m - We are using <class 'paddlenlp.transformers.ernie_layout.modeling.ErnieLayoutForQuestionAnswering'> to load 'ernie-layoutx-base-uncased'.[0m
+[32m[2023-11-10 08:51:01,568] [    INFO][0m - Already cached /home/ubuntu/.paddlenlp/models/ernie-layoutx-base-uncased/model_state.pdparams[0m
+[32m[2023-11-10 08:51:01,568] [    INFO][0m - Loading weights file model_state.pdparams from cache at /home/ubuntu/.paddlenlp/models/ernie-layoutx-base-uncased/model_state.pdparams[0m
+[32m[2023-11-10 08:51:02,860] [    INFO][0m - Loaded weights file from disk, setting weights to model.[0m
+[32m[2023-11-10 08:51:04,299] [    INFO][0m - All model checkpoint weights were used when initializing ErnieLayoutForQuestionAnswering.
+[0m
+[33m[2023-11-10 08:51:04,299] [ WARNING][0m - Some weights of ErnieLayoutForQuestionAnswering were not initialized from the model checkpoint at ernie-layoutx-base-uncased and are newly initialized: ['visual.pixel_std', 'embeddings.position_ids', 'qa_outputs.weight', 'qa_outputs.bias', 'visual.pixel_mean']
+You should probably TRAIN this model on a down-stream task to be able to use it for predictions and inference.[0m
+[32m[2023-11-10 08:51:04,332] [    INFO][0m - spliting train dataset into 16 shard[0m
+[33m[2023-11-10 08:55:09,367] [ WARNING][0m - Detected that datasets module was imported before paddlenlp. This may cause PaddleNLP datasets to be unavalible in intranet. Please import paddlenlp before datasets module to avoid download issues[0m
+[33m[2023-11-10 08:55:10,429] [ WARNING][0m - evaluation_strategy reset to IntervalStrategy.STEPS for do_eval is True. you can also set evaluation_strategy='epoch'.[0m
+======================= Modified FLAGS detected =======================
+FLAGS(name='FLAGS_selected_gpus', current_value='1', default_value='')
+=======================================================================
+I1110 08:55:10.429774 58250 tcp_utils.cc:107] Retry to connect to 172.31.1.102:36578 while the server is not yet listening.
+I1110 08:55:13.429986 58250 tcp_utils.cc:130] Successfully connected to 172.31.1.102:36578
+W1110 08:55:15.857751 58250 gpu_resources.cc:119] Please NOTE: device: 1, GPU Compute Capability: 7.5, Driver API Version: 12.3, Runtime API Version: 11.7
+W1110 08:55:15.864059 58250 gpu_resources.cc:149] device: 1, cuDNN Version: 8.5.
+[32m[2023-11-10 08:55:16,801] [    INFO][0m - The default value for the training argument `--report_to` will change in v5 (from all installed integrations to none). In v5, you will need to use `--report_to all` to get the same behavior as now. You should start updating your code and make this info disappear :-).[0m
+Traceback (most recent call last):
+  File "run_mrc.py", line 243, in <module>
+    main()
+  File "run_mrc.py", line 35, in main
+    model_args, data_args, training_args = parser.parse_args_into_dataclasses()
+  File "/home/ubuntu/Demo-with-user-question/paddlenlp/trainer/argparser.py", line 232, in parse_args_into_dataclasses
+    raise ValueError(f"Some specified arguments are not used by the PdArgumentParser: {remaining_args}")
+ValueError: Some specified arguments are not used by the PdArgumentParser: ['--devices', '=', '1,2,3']
+[33m[2023-11-10 08:55:40,111] [ WARNING][0m - Detected that datasets module was imported before paddlenlp. This may cause PaddleNLP datasets to be unavalible in intranet. Please import paddlenlp before datasets module to avoid download issues[0m
+[33m[2023-11-10 08:55:41,170] [ WARNING][0m - evaluation_strategy reset to IntervalStrategy.STEPS for do_eval is True. you can also set evaluation_strategy='epoch'.[0m
+======================= Modified FLAGS detected =======================
+FLAGS(name='FLAGS_selected_gpus', current_value='2', default_value='')
+=======================================================================
+I1110 08:55:41.171101 58689 tcp_utils.cc:130] Successfully connected to 172.31.1.102:53292
+W1110 08:55:42.745780 58689 gpu_resources.cc:119] Please NOTE: device: 2, GPU Compute Capability: 7.5, Driver API Version: 12.3, Runtime API Version: 11.7
+W1110 08:55:42.751969 58689 gpu_resources.cc:149] device: 2, cuDNN Version: 8.5.
+[32m[2023-11-10 08:55:43,320] [    INFO][0m - The default value for the training argument `--report_to` will change in v5 (from all installed integrations to none). In v5, you will need to use `--report_to all` to get the same behavior as now. You should start updating your code and make this info disappear :-).[0m
+[32m[2023-11-10 08:55:43,320] [    INFO][0m - ============================================================[0m
+[32m[2023-11-10 08:55:43,321] [    INFO][0m -      Model Configuration Arguments      [0m
+[32m[2023-11-10 08:55:43,321] [    INFO][0m - paddle commit id              : 3a1b1659a405a044ce806fbe027cc146f1193e6d[0m
+[32m[2023-11-10 08:55:43,321] [    INFO][0m - cache_dir                     : None[0m
+[32m[2023-11-10 08:55:43,321] [    INFO][0m - config_name                   : None[0m
+[32m[2023-11-10 08:55:43,321] [    INFO][0m - model_name_or_path            : ernie-layoutx-base-uncased[0m
+[32m[2023-11-10 08:55:43,321] [    INFO][0m - tokenizer_name                : None[0m
+[32m[2023-11-10 08:55:43,321] [    INFO][0m - [0m
+[32m[2023-11-10 08:55:43,321] [    INFO][0m - ============================================================[0m
+[32m[2023-11-10 08:55:43,321] [    INFO][0m -       Data Configuration Arguments      [0m
+[32m[2023-11-10 08:55:43,321] [    INFO][0m - paddle commit id              : 3a1b1659a405a044ce806fbe027cc146f1193e6d[0m
+[32m[2023-11-10 08:55:43,321] [    INFO][0m - dataset_config_name           : None[0m
+[32m[2023-11-10 08:55:43,321] [    INFO][0m - dataset_name                  : fidelity[0m
+[32m[2023-11-10 08:55:43,321] [    INFO][0m - doc_stride                    : 128[0m
+[32m[2023-11-10 08:55:43,321] [    INFO][0m - label_all_tokens              : False[0m
+[32m[2023-11-10 08:55:43,322] [    INFO][0m - lang                          : en[0m
+[32m[2023-11-10 08:55:43,322] [    INFO][0m - max_seq_length                : 512[0m
+[32m[2023-11-10 08:55:43,322] [    INFO][0m - max_test_samples              : None[0m
+[32m[2023-11-10 08:55:43,322] [    INFO][0m - max_train_samples             : None[0m
+[32m[2023-11-10 08:55:43,322] [    INFO][0m - max_val_samples               : None[0m
+[32m[2023-11-10 08:55:43,322] [    INFO][0m - overwrite_cache               : False[0m
+[32m[2023-11-10 08:55:43,322] [    INFO][0m - pad_to_max_length             : True[0m
+[32m[2023-11-10 08:55:43,322] [    INFO][0m - pattern                       : mrc[0m
+[32m[2023-11-10 08:55:43,322] [    INFO][0m - preprocessing_num_workers     : 32[0m
+[32m[2023-11-10 08:55:43,322] [    INFO][0m - return_entity_level_metrics   : False[0m
+[32m[2023-11-10 08:55:43,322] [    INFO][0m - rst_converter                 : None[0m
+[32m[2023-11-10 08:55:43,322] [    INFO][0m - target_size                   : 1000[0m
+[32m[2023-11-10 08:55:43,322] [    INFO][0m - task_name                     : ner[0m
+[32m[2023-11-10 08:55:43,322] [    INFO][0m - task_type                     : ner[0m
+[32m[2023-11-10 08:55:43,322] [    INFO][0m - train_log_file                : None[0m
+[32m[2023-11-10 08:55:43,322] [    INFO][0m - train_nshard                  : 16[0m
+[32m[2023-11-10 08:55:43,322] [    INFO][0m - use_segment_box               : False[0m
+[32m[2023-11-10 08:55:43,323] [    INFO][0m - [0m
+[32m[2023-11-10 08:55:43,411] [    INFO][0m - We are using (<class 'paddlenlp.transformers.ernie_layout.tokenizer.ErnieLayoutTokenizer'>, False) to load 'ernie-layoutx-base-uncased'.[0m
+[32m[2023-11-10 08:55:43,411] [    INFO][0m - Already cached /home/ubuntu/.paddlenlp/models/ernie-layoutx-base-uncased/vocab.txt[0m
+[32m[2023-11-10 08:55:43,411] [    INFO][0m - Already cached /home/ubuntu/.paddlenlp/models/ernie-layoutx-base-uncased/sentencepiece.bpe.model[0m
+[32m[2023-11-10 08:55:43,971] [    INFO][0m - tokenizer config file saved in /home/ubuntu/.paddlenlp/models/ernie-layoutx-base-uncased/tokenizer_config.json[0m
+[32m[2023-11-10 08:55:43,971] [    INFO][0m - Special tokens file saved in /home/ubuntu/.paddlenlp/models/ernie-layoutx-base-uncased/special_tokens_map.json[0m
+[32m[2023-11-10 08:55:43,971] [    INFO][0m - We are using <class 'paddlenlp.transformers.ernie_layout.modeling.ErnieLayoutForQuestionAnswering'> to load 'ernie-layoutx-base-uncased'.[0m
+[32m[2023-11-10 08:55:43,972] [    INFO][0m - Already cached /home/ubuntu/.paddlenlp/models/ernie-layoutx-base-uncased/model_state.pdparams[0m
+[32m[2023-11-10 08:55:43,972] [    INFO][0m - Loading weights file model_state.pdparams from cache at /home/ubuntu/.paddlenlp/models/ernie-layoutx-base-uncased/model_state.pdparams[0m
+[32m[2023-11-10 08:55:45,266] [    INFO][0m - Loaded weights file from disk, setting weights to model.[0m
+[32m[2023-11-10 08:55:46,716] [    INFO][0m - All model checkpoint weights were used when initializing ErnieLayoutForQuestionAnswering.
+[0m
+[33m[2023-11-10 08:55:46,717] [ WARNING][0m - Some weights of ErnieLayoutForQuestionAnswering were not initialized from the model checkpoint at ernie-layoutx-base-uncased and are newly initialized: ['qa_outputs.bias', 'embeddings.position_ids', 'visual.pixel_std', 'qa_outputs.weight', 'visual.pixel_mean']
+You should probably TRAIN this model on a down-stream task to be able to use it for predictions and inference.[0m
+[32m[2023-11-10 08:55:46,750] [    INFO][0m - spliting train dataset into 16 shard[0m
+[32m[2023-11-10 08:56:23,604] [    INFO][0m - ============================================================[0m
+[32m[2023-11-10 08:56:23,604] [    INFO][0m -     Training Configuration Arguments    [0m
+[32m[2023-11-10 08:56:23,604] [    INFO][0m - paddle commit id              : 3a1b1659a405a044ce806fbe027cc146f1193e6d[0m
+[32m[2023-11-10 08:56:23,604] [    INFO][0m - _no_sync_in_gradient_accumulation: True[0m
+[32m[2023-11-10 08:56:23,604] [    INFO][0m - adam_beta1                    : 0.9[0m
+[32m[2023-11-10 08:56:23,604] [    INFO][0m - adam_beta2                    : 0.999[0m
+[32m[2023-11-10 08:56:23,604] [    INFO][0m - adam_epsilon                  : 1e-08[0m
+[32m[2023-11-10 08:56:23,604] [    INFO][0m - amp_custom_black_list         : None[0m
+[32m[2023-11-10 08:56:23,604] [    INFO][0m - amp_custom_white_list         : None[0m
+[32m[2023-11-10 08:56:23,604] [    INFO][0m - amp_master_grad               : False[0m
+[32m[2023-11-10 08:56:23,605] [    INFO][0m - bf16                          : False[0m
+[32m[2023-11-10 08:56:23,605] [    INFO][0m - bf16_full_eval                : False[0m
+[32m[2023-11-10 08:56:23,605] [    INFO][0m - current_device                : gpu:2[0m
+[32m[2023-11-10 08:56:23,605] [    INFO][0m - data_parallel_rank            : 1[0m
+[32m[2023-11-10 08:56:23,605] [    INFO][0m - dataloader_drop_last          : False[0m
+[32m[2023-11-10 08:56:23,605] [    INFO][0m - dataloader_num_workers        : 0[0m
+[32m[2023-11-10 08:56:23,605] [    INFO][0m - dataset_rank                  : 1[0m
+[32m[2023-11-10 08:56:23,605] [    INFO][0m - dataset_world_size            : 3[0m
+[32m[2023-11-10 08:56:23,605] [    INFO][0m - device                        : gpu[0m
+[32m[2023-11-10 08:56:23,605] [    INFO][0m - disable_tqdm                  : False[0m
+[32m[2023-11-10 08:56:23,605] [    INFO][0m - do_eval                       : True[0m
+[32m[2023-11-10 08:56:23,605] [    INFO][0m - do_export                     : False[0m
+[32m[2023-11-10 08:56:23,605] [    INFO][0m - do_predict                    : False[0m
+[32m[2023-11-10 08:56:23,605] [    INFO][0m - do_train                      : True[0m
+[32m[2023-11-10 08:56:23,605] [    INFO][0m - eval_accumulation_steps       : None[0m
+[32m[2023-11-10 08:56:23,606] [    INFO][0m - eval_batch_size               : 6[0m
+[32m[2023-11-10 08:56:23,606] [    INFO][0m - eval_steps                    : 1000[0m
+[32m[2023-11-10 08:56:23,606] [    INFO][0m - evaluation_strategy           : IntervalStrategy.STEPS[0m
+[32m[2023-11-10 08:56:23,606] [    INFO][0m - flatten_param_grads           : False[0m
+[32m[2023-11-10 08:56:23,606] [    INFO][0m - fp16                          : False[0m
+[32m[2023-11-10 08:56:23,606] [    INFO][0m - fp16_full_eval                : False[0m
+[32m[2023-11-10 08:56:23,606] [    INFO][0m - fp16_opt_level                : O1[0m
+[32m[2023-11-10 08:56:23,606] [    INFO][0m - gradient_accumulation_steps   : 1[0m
+[32m[2023-11-10 08:56:23,606] [    INFO][0m - greater_is_better             : True[0m
+[32m[2023-11-10 08:56:23,606] [    INFO][0m - hybrid_parallel_topo_order    : None[0m
+[32m[2023-11-10 08:56:23,606] [    INFO][0m - ignore_data_skip              : False[0m
+[32m[2023-11-10 08:56:23,606] [    INFO][0m - label_names                   : ['start_positions', 'end_positions'][0m
+[32m[2023-11-10 08:56:23,606] [    INFO][0m - lazy_data_processing          : True[0m
+[32m[2023-11-10 08:56:23,606] [    INFO][0m - learning_rate                 : 2e-05[0m
+[32m[2023-11-10 08:56:23,606] [    INFO][0m - load_best_model_at_end        : True[0m
+[32m[2023-11-10 08:56:23,606] [    INFO][0m - load_sharded_model            : False[0m
+[32m[2023-11-10 08:56:23,607] [    INFO][0m - local_process_index           : 1[0m
+[32m[2023-11-10 08:56:23,607] [    INFO][0m - local_rank                    : 1[0m
+[32m[2023-11-10 08:56:23,607] [    INFO][0m - log_level                     : -1[0m
+[32m[2023-11-10 08:56:23,607] [    INFO][0m - log_level_replica             : -1[0m
+[32m[2023-11-10 08:56:23,607] [    INFO][0m - log_on_each_node              : True[0m
+[32m[2023-11-10 08:56:23,607] [    INFO][0m - logging_dir                   : ./models/fidelity/runs/Nov10_08-55-41_ip-172-31-1-102[0m
+[32m[2023-11-10 08:56:23,607] [    INFO][0m - logging_first_step            : False[0m
+[32m[2023-11-10 08:56:23,607] [    INFO][0m - logging_steps                 : 500[0m
+[32m[2023-11-10 08:56:23,607] [    INFO][0m - logging_strategy              : IntervalStrategy.STEPS[0m
+[32m[2023-11-10 08:56:23,607] [    INFO][0m - lr_end                        : 1e-07[0m
+[32m[2023-11-10 08:56:23,607] [    INFO][0m - lr_scheduler_type             : SchedulerType.LINEAR[0m
+[32m[2023-11-10 08:56:23,607] [    INFO][0m - max_evaluate_steps            : -1[0m
+[32m[2023-11-10 08:56:23,607] [    INFO][0m - max_grad_norm                 : 1.0[0m
+[32m[2023-11-10 08:56:23,607] [    INFO][0m - max_steps                     : -1[0m
+[32m[2023-11-10 08:56:23,607] [    INFO][0m - metric_for_best_model         : anls[0m
+[32m[2023-11-10 08:56:23,607] [    INFO][0m - minimum_eval_times            : None[0m
+[32m[2023-11-10 08:56:23,608] [    INFO][0m - no_cuda                       : False[0m
+[32m[2023-11-10 08:56:23,608] [    INFO][0m - num_cycles                    : 0.5[0m
+[32m[2023-11-10 08:56:23,608] [    INFO][0m - num_train_epochs              : 4.0[0m
+[32m[2023-11-10 08:56:23,608] [    INFO][0m - optim                         : OptimizerNames.ADAMW[0m
+[32m[2023-11-10 08:56:23,608] [    INFO][0m - optimizer_name_suffix         : None[0m
+[32m[2023-11-10 08:56:23,608] [    INFO][0m - output_dir                    : ./models/fidelity/[0m
+[32m[2023-11-10 08:56:23,608] [    INFO][0m - overwrite_output_dir          : True[0m
+[32m[2023-11-10 08:56:23,608] [    INFO][0m - past_index                    : -1[0m
+[32m[2023-11-10 08:56:23,608] [    INFO][0m - per_device_eval_batch_size    : 6[0m
+[32m[2023-11-10 08:56:23,608] [    INFO][0m - per_device_train_batch_size   : 6[0m
+[32m[2023-11-10 08:56:23,608] [    INFO][0m - pipeline_parallel_config      : [0m
+[32m[2023-11-10 08:56:23,608] [    INFO][0m - pipeline_parallel_degree      : -1[0m
+[32m[2023-11-10 08:56:23,608] [    INFO][0m - pipeline_parallel_rank        : 0[0m
+[32m[2023-11-10 08:56:23,608] [    INFO][0m - power                         : 1.0[0m
+[32m[2023-11-10 08:56:23,608] [    INFO][0m - prediction_loss_only          : False[0m
+[32m[2023-11-10 08:56:23,608] [    INFO][0m - process_index                 : 1[0m
+[32m[2023-11-10 08:56:23,609] [    INFO][0m - recompute                     : False[0m
+[32m[2023-11-10 08:56:23,609] [    INFO][0m - remove_unused_columns         : True[0m
+[32m[2023-11-10 08:56:23,609] [    INFO][0m - report_to                     : ['visualdl'][0m
+[32m[2023-11-10 08:56:23,609] [    INFO][0m - resume_from_checkpoint        : None[0m
+[32m[2023-11-10 08:56:23,609] [    INFO][0m - run_name                      : ./models/fidelity/[0m
+[32m[2023-11-10 08:56:23,609] [    INFO][0m - save_on_each_node             : False[0m
+[32m[2023-11-10 08:56:23,609] [    INFO][0m - save_sharded_model            : False[0m
+[32m[2023-11-10 08:56:23,609] [    INFO][0m - save_steps                    : 1000[0m
+[32m[2023-11-10 08:56:23,609] [    INFO][0m - save_strategy                 : IntervalStrategy.STEPS[0m
+[32m[2023-11-10 08:56:23,609] [    INFO][0m - save_total_limit              : 1[0m
+[32m[2023-11-10 08:56:23,609] [    INFO][0m - scale_loss                    : 32768[0m
+[32m[2023-11-10 08:56:23,609] [    INFO][0m - seed                          : 1000[0m
+[32m[2023-11-10 08:56:23,609] [    INFO][0m - sharding                      : [][0m
+[32m[2023-11-10 08:56:23,609] [    INFO][0m - sharding_degree               : -1[0m
+[32m[2023-11-10 08:56:23,609] [    INFO][0m - sharding_parallel_config      : [0m
+[32m[2023-11-10 08:56:23,609] [    INFO][0m - sharding_parallel_degree      : -1[0m
+[32m[2023-11-10 08:56:23,610] [    INFO][0m - sharding_parallel_rank        : 0[0m
+[32m[2023-11-10 08:56:23,610] [    INFO][0m - should_load_sharding_stage1_model: False[0m
+[32m[2023-11-10 08:56:23,610] [    INFO][0m - should_log                    : False[0m
+[32m[2023-11-10 08:56:23,610] [    INFO][0m - should_save                   : False[0m
+[32m[2023-11-10 08:56:23,610] [    INFO][0m - should_save_model_state       : False[0m
+[32m[2023-11-10 08:56:23,610] [    INFO][0m - should_save_sharding_stage1_model: False[0m
+[32m[2023-11-10 08:56:23,610] [    INFO][0m - skip_memory_metrics           : True[0m
+[32m[2023-11-10 08:56:23,610] [    INFO][0m - skip_profile_timer            : True[0m
+[32m[2023-11-10 08:56:23,610] [    INFO][0m - tensor_parallel_degree        : -1[0m
+[32m[2023-11-10 08:56:23,610] [    INFO][0m - tensor_parallel_rank          : 0[0m
+[32m[2023-11-10 08:56:23,610] [    INFO][0m - train_batch_size              : 6[0m
+[32m[2023-11-10 08:56:23,610] [    INFO][0m - use_hybrid_parallel           : False[0m
+[32m[2023-11-10 08:56:23,610] [    INFO][0m - warmup_ratio                  : 0.05[0m
+[32m[2023-11-10 08:56:23,610] [    INFO][0m - warmup_steps                  : 0[0m
+[32m[2023-11-10 08:56:23,610] [    INFO][0m - weight_decay                  : 0.0[0m
+[32m[2023-11-10 08:56:23,610] [    INFO][0m - weight_name_suffix            : None[0m
+[32m[2023-11-10 08:56:23,611] [    INFO][0m - world_size                    : 3[0m
+[32m[2023-11-10 08:56:23,611] [    INFO][0m - [0m
+[32m[2023-11-10 08:56:23,611] [    INFO][0m - The following columns in the training set  don't have a corresponding argument in `ErnieLayoutForQuestionAnswering.forward` and have been ignored: tokens, end_labels, questions, token_is_max_context, id, question_id, start_labels, token_to_orig_map. If tokens, end_labels, questions, token_is_max_context, id, question_id, start_labels, token_to_orig_map are not expected by `ErnieLayoutForQuestionAnswering.forward`,  you can safely ignore this message.[0m
+[32m[2023-11-10 08:56:29,824] [    INFO][0m - ***** Running training *****[0m
+[32m[2023-11-10 08:56:29,824] [    INFO][0m -   Num examples = 13,978[0m
+[32m[2023-11-10 08:56:29,824] [    INFO][0m -   Num Epochs = 4[0m
+[32m[2023-11-10 08:56:29,824] [    INFO][0m -   Instantaneous batch size per device = 6[0m
+[32m[2023-11-10 08:56:29,824] [    INFO][0m -   Total train batch size (w. parallel, distributed & accumulation) = 18[0m
+[32m[2023-11-10 08:56:29,824] [    INFO][0m -   Gradient Accumulation steps = 1[0m
+[32m[2023-11-10 08:56:29,824] [    INFO][0m -   Total optimization steps = 3,108[0m
+[32m[2023-11-10 08:56:29,824] [    INFO][0m -   Total num train samples = 55,912[0m
+[32m[2023-11-10 08:56:29,826] [    INFO][0m -   Number of trainable parameters = 281,693,122 (per device)[0m
+[33m[2023-11-10 09:02:29,813] [ WARNING][0m - Detected that datasets module was imported before paddlenlp. This may cause PaddleNLP datasets to be unavalible in intranet. Please import paddlenlp before datasets module to avoid download issues[0m
+[33m[2023-11-10 09:02:30,877] [ WARNING][0m - evaluation_strategy reset to IntervalStrategy.STEPS for do_eval is True. you can also set evaluation_strategy='epoch'.[0m
+======================= Modified FLAGS detected =======================
+FLAGS(name='FLAGS_selected_gpus', current_value='2', default_value='')
+=======================================================================
+I1110 09:02:30.878175 60369 tcp_utils.cc:130] Successfully connected to 172.31.1.102:63572
+W1110 09:02:35.189725 60369 gpu_resources.cc:119] Please NOTE: device: 2, GPU Compute Capability: 7.5, Driver API Version: 12.3, Runtime API Version: 11.7
+W1110 09:02:35.195925 60369 gpu_resources.cc:149] device: 2, cuDNN Version: 8.5.
+[32m[2023-11-10 09:02:35,756] [    INFO][0m - The default value for the training argument `--report_to` will change in v5 (from all installed integrations to none). In v5, you will need to use `--report_to all` to get the same behavior as now. You should start updating your code and make this info disappear :-).[0m
+[32m[2023-11-10 09:02:35,757] [    INFO][0m - ============================================================[0m
+[32m[2023-11-10 09:02:35,757] [    INFO][0m -      Model Configuration Arguments      [0m
+[32m[2023-11-10 09:02:35,757] [    INFO][0m - paddle commit id              : 3a1b1659a405a044ce806fbe027cc146f1193e6d[0m
+[32m[2023-11-10 09:02:35,757] [    INFO][0m - cache_dir                     : None[0m
+[32m[2023-11-10 09:02:35,758] [    INFO][0m - config_name                   : None[0m
+[32m[2023-11-10 09:02:35,758] [    INFO][0m - model_name_or_path            : doc15k[0m
+[32m[2023-11-10 09:02:35,758] [    INFO][0m - tokenizer_name                : None[0m
+[32m[2023-11-10 09:02:35,758] [    INFO][0m - [0m
+[32m[2023-11-10 09:02:35,758] [    INFO][0m - ============================================================[0m
+[32m[2023-11-10 09:02:35,758] [    INFO][0m -       Data Configuration Arguments      [0m
+[32m[2023-11-10 09:02:35,758] [    INFO][0m - paddle commit id              : 3a1b1659a405a044ce806fbe027cc146f1193e6d[0m
+[32m[2023-11-10 09:02:35,758] [    INFO][0m - dataset_config_name           : None[0m
+[32m[2023-11-10 09:02:35,758] [    INFO][0m - dataset_name                  : fidelity[0m
+[32m[2023-11-10 09:02:35,758] [    INFO][0m - doc_stride                    : 128[0m
+[32m[2023-11-10 09:02:35,758] [    INFO][0m - label_all_tokens              : False[0m
+[32m[2023-11-10 09:02:35,758] [    INFO][0m - lang                          : en[0m
+[32m[2023-11-10 09:02:35,758] [    INFO][0m - max_seq_length                : 512[0m
+[32m[2023-11-10 09:02:35,758] [    INFO][0m - max_test_samples              : None[0m
+[32m[2023-11-10 09:02:35,758] [    INFO][0m - max_train_samples             : None[0m
+[32m[2023-11-10 09:02:35,759] [    INFO][0m - max_val_samples               : None[0m
+[32m[2023-11-10 09:02:35,759] [    INFO][0m - overwrite_cache               : False[0m
+[32m[2023-11-10 09:02:35,759] [    INFO][0m - pad_to_max_length             : True[0m
+[32m[2023-11-10 09:02:35,759] [    INFO][0m - pattern                       : mrc[0m
+[32m[2023-11-10 09:02:35,759] [    INFO][0m - preprocessing_num_workers     : 32[0m
+[32m[2023-11-10 09:02:35,759] [    INFO][0m - return_entity_level_metrics   : False[0m
+[32m[2023-11-10 09:02:35,759] [    INFO][0m - rst_converter                 : None[0m
+[32m[2023-11-10 09:02:35,759] [    INFO][0m - target_size                   : 1000[0m
+[32m[2023-11-10 09:02:35,759] [    INFO][0m - task_name                     : ner[0m
+[32m[2023-11-10 09:02:35,759] [    INFO][0m - task_type                     : ner[0m
+[32m[2023-11-10 09:02:35,759] [    INFO][0m - train_log_file                : None[0m
+[32m[2023-11-10 09:02:35,759] [    INFO][0m - train_nshard                  : 16[0m
+[32m[2023-11-10 09:02:35,759] [    INFO][0m - use_segment_box               : False[0m
+[32m[2023-11-10 09:02:35,759] [    INFO][0m - [0m
+[32m[2023-11-10 09:02:35,855] [    INFO][0m - We are using <class 'paddlenlp.transformers.ernie_layout.tokenizer.ErnieLayoutTokenizer'> to load 'doc15k'.[0m
+Traceback (most recent call last):
+  File "run_mrc.py", line 243, in <module>
+    main()
+  File "run_mrc.py", line 72, in main
+    tokenizer = AutoTokenizer.from_pretrained(model_args.model_name_or_path)
+  File "/home/ubuntu/Demo-with-user-question/paddlenlp/transformers/auto/tokenizer.py", line 345, in from_pretrained
+    return tokenizer_class.from_pretrained(pretrained_model_name_or_path, *model_args, **kwargs)
+  File "/home/ubuntu/Demo-with-user-question/paddlenlp/transformers/tokenizer_utils_base.py", line 1593, in from_pretrained
+    tokenizer = cls(*init_args, **init_kwargs)
+  File "/home/ubuntu/Demo-with-user-question/paddlenlp/transformers/utils.py", line 249, in __impl__
+    init_func(self, *args, **kwargs)
+TypeError: __init__() missing 1 required positional argument: 'vocab_file'
+[33m[2023-11-10 09:04:44,696] [ WARNING][0m - Detected that datasets module was imported before paddlenlp. This may cause PaddleNLP datasets to be unavalible in intranet. Please import paddlenlp before datasets module to avoid download issues[0m
+[33m[2023-11-10 09:04:45,767] [ WARNING][0m - evaluation_strategy reset to IntervalStrategy.STEPS for do_eval is True. you can also set evaluation_strategy='epoch'.[0m
+======================= Modified FLAGS detected =======================
+FLAGS(name='FLAGS_selected_gpus', current_value='2', default_value='')
+=======================================================================
+I1110 09:04:45.768126 60730 tcp_utils.cc:130] Successfully connected to 172.31.1.102:55856
+W1110 09:04:47.325721 60730 gpu_resources.cc:119] Please NOTE: device: 2, GPU Compute Capability: 7.5, Driver API Version: 12.3, Runtime API Version: 11.7
+W1110 09:04:47.331939 60730 gpu_resources.cc:149] device: 2, cuDNN Version: 8.5.
+[32m[2023-11-10 09:04:47,903] [    INFO][0m - The default value for the training argument `--report_to` will change in v5 (from all installed integrations to none). In v5, you will need to use `--report_to all` to get the same behavior as now. You should start updating your code and make this info disappear :-).[0m
+[32m[2023-11-10 09:04:47,904] [    INFO][0m - ============================================================[0m
+[32m[2023-11-10 09:04:47,904] [    INFO][0m -      Model Configuration Arguments      [0m
+[32m[2023-11-10 09:04:47,905] [    INFO][0m - paddle commit id              : 3a1b1659a405a044ce806fbe027cc146f1193e6d[0m
+[32m[2023-11-10 09:04:47,905] [    INFO][0m - cache_dir                     : None[0m
+[32m[2023-11-10 09:04:47,905] [    INFO][0m - config_name                   : None[0m
+[32m[2023-11-10 09:04:47,905] [    INFO][0m - model_name_or_path            : doc15k[0m
+[32m[2023-11-10 09:04:47,905] [    INFO][0m - tokenizer_name                : None[0m
+[32m[2023-11-10 09:04:47,905] [    INFO][0m - [0m
+[32m[2023-11-10 09:04:47,905] [    INFO][0m - ============================================================[0m
+[32m[2023-11-10 09:04:47,905] [    INFO][0m -       Data Configuration Arguments      [0m
+[32m[2023-11-10 09:04:47,905] [    INFO][0m - paddle commit id              : 3a1b1659a405a044ce806fbe027cc146f1193e6d[0m
+[32m[2023-11-10 09:04:47,905] [    INFO][0m - dataset_config_name           : None[0m
+[32m[2023-11-10 09:04:47,905] [    INFO][0m - dataset_name                  : fidelity[0m
+[32m[2023-11-10 09:04:47,905] [    INFO][0m - doc_stride                    : 128[0m
+[32m[2023-11-10 09:04:47,905] [    INFO][0m - label_all_tokens              : False[0m
+[32m[2023-11-10 09:04:47,906] [    INFO][0m - lang                          : en[0m
+[32m[2023-11-10 09:04:47,906] [    INFO][0m - max_seq_length                : 512[0m
+[32m[2023-11-10 09:04:47,906] [    INFO][0m - max_test_samples              : None[0m
+[32m[2023-11-10 09:04:47,906] [    INFO][0m - max_train_samples             : None[0m
+[32m[2023-11-10 09:04:47,906] [    INFO][0m - max_val_samples               : None[0m
+[32m[2023-11-10 09:04:47,906] [    INFO][0m - overwrite_cache               : False[0m
+[32m[2023-11-10 09:04:47,906] [    INFO][0m - pad_to_max_length             : True[0m
+[32m[2023-11-10 09:04:47,906] [    INFO][0m - pattern                       : mrc[0m
+[32m[2023-11-10 09:04:47,906] [    INFO][0m - preprocessing_num_workers     : 32[0m
+[32m[2023-11-10 09:04:47,906] [    INFO][0m - return_entity_level_metrics   : False[0m
+[32m[2023-11-10 09:04:47,906] [    INFO][0m - rst_converter                 : None[0m
+[32m[2023-11-10 09:04:47,906] [    INFO][0m - target_size                   : 1000[0m
+[32m[2023-11-10 09:04:47,906] [    INFO][0m - task_name                     : ner[0m
+[32m[2023-11-10 09:04:47,906] [    INFO][0m - task_type                     : ner[0m
+[32m[2023-11-10 09:04:47,906] [    INFO][0m - train_log_file                : None[0m
+[32m[2023-11-10 09:04:47,906] [    INFO][0m - train_nshard                  : 16[0m
+[32m[2023-11-10 09:04:47,907] [    INFO][0m - use_segment_box               : False[0m
+[32m[2023-11-10 09:04:47,907] [    INFO][0m - [0m
+[32m[2023-11-10 09:04:47,950] [    INFO][0m - We are using <class 'paddlenlp.transformers.ernie_layout.tokenizer.ErnieLayoutTokenizer'> to load 'doc15k'.[0m
+[32m[2023-11-10 09:04:48,513] [    INFO][0m - We are using <class 'paddlenlp.transformers.ernie_layout.modeling.ErnieLayoutForQuestionAnswering'> to load 'doc15k'.[0m
+[32m[2023-11-10 09:04:48,513] [    INFO][0m - Loading configuration file doc15k/config.json[0m
+[32m[2023-11-10 09:04:48,514] [    INFO][0m - Loading weights file doc15k/model_state.pdparams[0m
+[32m[2023-11-10 09:04:49,861] [    INFO][0m - Loaded weights file from disk, setting weights to model.[0m
+[32m[2023-11-10 09:04:51,323] [    INFO][0m - All model checkpoint weights were used when initializing ErnieLayoutForQuestionAnswering.
+[0m
+[32m[2023-11-10 09:04:51,323] [    INFO][0m - All the weights of ErnieLayoutForQuestionAnswering were initialized from the model checkpoint at doc15k.
+If your task is similar to the task the model of the checkpoint was trained on, you can already use ErnieLayoutForQuestionAnswering for predictions without further training.[0m
+[32m[2023-11-10 09:04:51,353] [    INFO][0m - spliting train dataset into 16 shard[0m
+Map (num_proc=32):   0%|          | 0/68 [00:00<?, ? examples/s]Map (num_proc=32):   3%|▎         | 2/68 [00:01<01:03,  1.04 examples/s]Map (num_proc=32):   7%|▋         | 5/68 [00:02<00:25,  2.47 examples/s]Map (num_proc=32):  12%|█▏        | 8/68 [00:02<00:18,  3.27 examples/s]Map (num_proc=32):  21%|██        | 14/68 [00:03<00:09,  5.55 examples/s]Map (num_proc=32):  26%|██▋       | 18/68 [00:03<00:07,  6.75 examples/s]Map (num_proc=32):  34%|███▍      | 23/68 [00:04<00:06,  7.04 examples/s]Map (num_proc=32):  40%|███▉      | 27/68 [00:04<00:05,  8.11 examples/s]Map (num_proc=32):  62%|██████▏   | 42/68 [00:04<00:01, 19.63 examples/s]Map (num_proc=32):  71%|███████   | 48/68 [00:05<00:01, 16.83 examples/s]Map (num_proc=32):  79%|███████▉  | 54/68 [00:05<00:00, 20.41 examples/s]Map (num_proc=32):  88%|████████▊ | 60/68 [00:05<00:00, 24.32 examples/s]Map (num_proc=32): 100%|██████████| 68/68 [00:05<00:00, 26.57 examples/s]Map (num_proc=32): 100%|██████████| 68/68 [00:06<00:00, 11.02 examples/s]
+Map (num_proc=32):   0%|          | 0/68 [00:00<?, ? examples/s]Map (num_proc=32):   4%|▍         | 3/68 [00:02<00:50,  1.29 examples/s]Map (num_proc=32):   7%|▋         | 5/68 [00:02<00:31,  2.00 examples/s]Map (num_proc=32):  13%|█▎        | 9/68 [00:03<00:16,  3.63 examples/s]Map (num_proc=32):  19%|█▉        | 13/68 [00:03<00:09,  5.92 examples/s]Map (num_proc=32):  22%|██▏       | 15/68 [00:03<00:08,  6.10 examples/s]Map (num_proc=32):  25%|██▌       | 17/68 [00:03<00:07,  6.66 examples/s]Map (num_proc=32):  32%|███▏      | 22/68 [00:04<00:04, 10.56 examples/s]Map (num_proc=32):  44%|████▍     | 30/68 [00:04<00:02, 18.38 examples/s]Map (num_proc=32):  50%|█████     | 34/68 [00:04<00:02, 14.71 examples/s]Map (num_proc=32):  56%|█████▌    | 38/68 [00:05<00:02, 11.62 examples/s]Map (num_proc=32):  59%|█████▉    | 40/68 [00:05<00:02, 12.49 examples/s]Map (num_proc=32):  79%|███████▉  | 54/68 [00:05<00:00, 27.54 examples/s]Map (num_proc=32):  88%|████████▊ | 60/68 [00:05<00:00, 27.70 examples/s]Map (num_proc=32): 100%|██████████| 68/68 [00:05<00:00, 34.08 examples/s]Map (num_proc=32): 100%|██████████| 68/68 [00:06<00:00, 11.25 examples/s]
+Map (num_proc=32):   0%|          | 0/68 [00:00<?, ? examples/s]Map (num_proc=32):   4%|▍         | 3/68 [00:01<00:43,  1.51 examples/s]Map (num_proc=32):   9%|▉         | 6/68 [00:02<00:20,  2.98 examples/s]Map (num_proc=32):  13%|█▎        | 9/68 [00:02<00:13,  4.37 examples/s]Map (num_proc=32):  16%|█▌        | 11/68 [00:02<00:10,  5.36 examples/s]Map (num_proc=32):  19%|█▉        | 13/68 [00:02<00:08,  6.47 examples/s]Map (num_proc=32):  22%|██▏       | 15/68 [00:03<00:06,  7.66 examples/s]Map (num_proc=32):  25%|██▌       | 17/68 [00:03<00:07,  6.87 examples/s]Map (num_proc=32):  31%|███       | 21/68 [00:03<00:04, 10.55 examples/s]Map (num_proc=32):  37%|███▋      | 25/68 [00:04<00:04,  8.82 examples/s]Map (num_proc=32):  47%|████▋     | 32/68 [00:04<00:02, 14.94 examples/s]Map (num_proc=32):  53%|█████▎    | 36/68 [00:04<00:01, 16.02 examples/s]Map (num_proc=32):  62%|██████▏   | 42/68 [00:04<00:01, 18.93 examples/s]Map (num_proc=32):  68%|██████▊   | 46/68 [00:04<00:01, 19.24 examples/s]Map (num_proc=32):  74%|███████▎  | 50/68 [00:05<00:00, 20.84 examples/s]Map (num_proc=32):  82%|████████▏ | 56/68 [00:05<00:00, 24.07 examples/s]Map (num_proc=32):  94%|█████████▍| 64/68 [00:05<00:00, 32.15 examples/s]Map (num_proc=32): 100%|██████████| 68/68 [00:05<00:00, 22.51 examples/s]Map (num_proc=32): 100%|██████████| 68/68 [00:05<00:00, 11.54 examples/s]
+Map (num_proc=32):   0%|          | 0/68 [00:00<?, ? examples/s]Map (num_proc=32):   4%|▍         | 3/68 [00:02<00:54,  1.19 examples/s]Map (num_proc=32):   7%|▋         | 5/68 [00:02<00:30,  2.04 examples/s]Map (num_proc=32):  10%|█         | 7/68 [00:02<00:20,  3.00 examples/s]Map (num_proc=32):  15%|█▍        | 10/68 [00:03<00:12,  4.69 examples/s]Map (num_proc=32):  18%|█▊        | 12/68 [00:03<00:09,  5.68 examples/s]Map (num_proc=32):  26%|██▋       | 18/68 [00:03<00:04, 11.68 examples/s]Map (num_proc=32):  32%|███▏      | 22/68 [00:04<00:07,  5.87 examples/s]Map (num_proc=32):  47%|████▋     | 32/68 [00:05<00:03, 10.94 examples/s]Map (num_proc=32):  56%|█████▌    | 38/68 [00:05<00:02, 14.84 examples/s]Map (num_proc=32):  68%|██████▊   | 46/68 [00:05<00:01, 20.45 examples/s]Map (num_proc=32):  76%|███████▋  | 52/68 [00:05<00:00, 23.60 examples/s]Map (num_proc=32):  88%|████████▊ | 60/68 [00:05<00:00, 30.00 examples/s]Map (num_proc=32):  97%|█████████▋| 66/68 [00:05<00:00, 31.33 examples/s]Map (num_proc=32): 100%|██████████| 68/68 [00:06<00:00, 11.10 examples/s]
+Map (num_proc=32):   0%|          | 0/68 [00:00<?, ? examples/s]Map (num_proc=32):   4%|▍         | 3/68 [00:02<00:50,  1.28 examples/s]Map (num_proc=32):   7%|▋         | 5/68 [00:02<00:31,  2.01 examples/s]Map (num_proc=32):  13%|█▎        | 9/68 [00:03<00:14,  4.01 examples/s]Map (num_proc=32):  16%|█▌        | 11/68 [00:03<00:14,  4.04 examples/s]Map (num_proc=32):  25%|██▌       | 17/68 [00:03<00:06,  8.30 examples/s]Map (num_proc=32):  31%|███       | 21/68 [00:04<00:07,  6.39 examples/s]Map (num_proc=32):  34%|███▍      | 23/68 [00:04<00:06,  7.02 examples/s]Map (num_proc=32):  41%|████      | 28/68 [00:04<00:03, 10.78 examples/s]Map (num_proc=32):  46%|████▌     | 31/68 [00:05<00:04,  9.05 examples/s]Map (num_proc=32):  71%|███████   | 48/68 [00:05<00:00, 22.54 examples/s]Map (num_proc=32):  79%|███████▉  | 54/68 [00:05<00:00, 25.99 examples/s]Map (num_proc=32): 100%|██████████| 68/68 [00:05<00:00, 37.92 examples/s]Map (num_proc=32): 100%|██████████| 68/68 [00:06<00:00, 10.64 examples/s]
+Map (num_proc=32):   0%|          | 0/68 [00:00<?, ? examples/s]Map (num_proc=32):   3%|▎         | 2/68 [00:02<01:24,  1.27s/ examples]Map (num_proc=32):   9%|▉         | 6/68 [00:02<00:22,  2.81 examples/s]Map (num_proc=32):  12%|█▏        | 8/68 [00:03<00:20,  2.95 examples/s]Map (num_proc=32):  19%|█▉        | 13/68 [00:03<00:09,  5.97 examples/s]Map (num_proc=32):  26%|██▋       | 18/68 [00:04<00:07,  6.86 examples/s]Map (num_proc=32):  29%|██▉       | 20/68 [00:04<00:06,  7.29 examples/s]Map (num_proc=32):  41%|████      | 28/68 [00:04<00:02, 13.97 examples/s]Map (num_proc=32):  47%|████▋     | 32/68 [00:04<00:02, 16.76 examples/s]Map (num_proc=32):  53%|█████▎    | 36/68 [00:04<00:01, 17.38 examples/s]Map (num_proc=32):  59%|█████▉    | 40/68 [00:04<00:01, 17.97 examples/s]Map (num_proc=32):  76%|███████▋  | 52/68 [00:05<00:00, 27.89 examples/s]Map (num_proc=32):  82%|████████▏ | 56/68 [00:05<00:00, 26.30 examples/s]Map (num_proc=32):  88%|████████▊ | 60/68 [00:05<00:00, 24.69 examples/s]Map (num_proc=32):  97%|█████████▋| 66/68 [00:05<00:00, 23.13 examples/s]Map (num_proc=32): 100%|██████████| 68/68 [00:05<00:00, 11.40 examples/s]
+Map (num_proc=32):   0%|          | 0/68 [00:00<?, ? examples/s]Map (num_proc=32):   4%|▍         | 3/68 [00:02<00:54,  1.18 examples/s]Map (num_proc=32):   7%|▋         | 5/68 [00:03<00:34,  1.81 examples/s]Map (num_proc=32):  12%|█▏        | 8/68 [00:03<00:17,  3.46 examples/s]Map (num_proc=32):  15%|█▍        | 10/68 [00:03<00:13,  4.18 examples/s]Map (num_proc=32):  21%|██        | 14/68 [00:03<00:07,  6.85 examples/s]Map (num_proc=32):  24%|██▎       | 16/68 [00:03<00:07,  7.25 examples/s]Map (num_proc=32):  26%|██▋       | 18/68 [00:04<00:06,  7.32 examples/s]Map (num_proc=32):  41%|████      | 28/68 [00:04<00:02, 16.04 examples/s]Map (num_proc=32):  49%|████▊     | 33/68 [00:04<00:02, 12.90 examples/s]Map (num_proc=32):  59%|█████▉    | 40/68 [00:05<00:01, 17.53 examples/s]Map (num_proc=32):  71%|███████   | 48/68 [00:05<00:00, 24.06 examples/s]Map (num_proc=32):  85%|████████▌ | 58/68 [00:05<00:00, 31.51 examples/s]Map (num_proc=32):  94%|█████████▍| 64/68 [00:05<00:00, 32.27 examples/s]Map (num_proc=32): 100%|██████████| 68/68 [00:05<00:00, 28.08 examples/s]Map (num_proc=32): 100%|██████████| 68/68 [00:05<00:00, 11.57 examples/s]
+Map (num_proc=32):   0%|          | 0/68 [00:00<?, ? examples/s]Map (num_proc=32):   3%|▎         | 2/68 [00:03<01:40,  1.52s/ examples]Map (num_proc=32):   6%|▌         | 4/68 [00:03<00:48,  1.31 examples/s]Map (num_proc=32):  28%|██▊       | 19/68 [00:04<00:07,  6.66 examples/s]Map (num_proc=32):  34%|███▍      | 23/68 [00:04<00:05,  7.83 examples/s]Map (num_proc=32):  37%|███▋      | 25/68 [00:04<00:05,  7.47 examples/s]Map (num_proc=32):  47%|████▋     | 32/68 [00:04<00:03, 11.93 examples/s]Map (num_proc=32):  53%|█████▎    | 36/68 [00:05<00:02, 14.28 examples/s]Map (num_proc=32):  62%|██████▏   | 42/68 [00:05<00:01, 18.65 examples/s]Map (num_proc=32):  68%|██████▊   | 46/68 [00:05<00:01, 20.81 examples/s]Map (num_proc=32):  97%|█████████▋| 66/68 [00:05<00:00, 44.28 examples/s]Map (num_proc=32): 100%|██████████| 68/68 [00:06<00:00, 10.87 examples/s]
+Map (num_proc=32):   0%|          | 0/68 [00:00<?, ? examples/s]Map (num_proc=32):   3%|▎         | 2/68 [00:02<01:28,  1.34s/ examples]Map (num_proc=32):   6%|▌         | 4/68 [00:02<00:37,  1.71 examples/s]Map (num_proc=32):   9%|▉         | 6/68 [00:03<00:23,  2.67 examples/s]Map (num_proc=32):  16%|█▌        | 11/68 [00:03<00:11,  4.81 examples/s]Map (num_proc=32):  22%|██▏       | 15/68 [00:03<00:07,  7.30 examples/s]Map (num_proc=32):  26%|██▋       | 18/68 [00:03<00:05,  9.34 examples/s]Map (num_proc=32):  34%|███▍      | 23/68 [00:03<00:03, 14.09 examples/s]Map (num_proc=32):  40%|███▉      | 27/68 [00:04<00:03, 12.57 examples/s]Map (num_proc=32):  47%|████▋     | 32/68 [00:04<00:02, 15.74 examples/s]Map (num_proc=32):  74%|███████▎  | 50/68 [00:04<00:00, 32.21 examples/s]Map (num_proc=32):  79%|███████▉  | 54/68 [00:05<00:00, 22.33 examples/s]Map (num_proc=32):  97%|█████████▋| 66/68 [00:05<00:00, 31.41 examples/s]Map (num_proc=32): 100%|██████████| 68/68 [00:05<00:00, 11.91 examples/s]
+Map (num_proc=32):   0%|          | 0/68 [00:00<?, ? examples/s]Map (num_proc=32):   3%|▎         | 2/68 [00:02<01:15,  1.14s/ examples]Map (num_proc=32):   6%|▌         | 4/68 [00:02<00:33,  1.92 examples/s]Map (num_proc=32):  15%|█▍        | 10/68 [00:02<00:12,  4.75 examples/s]Map (num_proc=32):  19%|█▉        | 13/68 [00:03<00:12,  4.57 examples/s]Map (num_proc=32):  26%|██▋       | 18/68 [00:03<00:07,  6.95 examples/s]Map (num_proc=32):  31%|███       | 21/68 [00:04<00:07,  6.36 examples/s]Map (num_proc=32):  50%|█████     | 34/68 [00:04<00:02, 15.80 examples/s]Map (num_proc=32):  59%|█████▉    | 40/68 [00:05<00:02, 12.92 examples/s]Map (num_proc=32):  74%|███████▎  | 50/68 [00:05<00:00, 19.55 examples/s]Map (num_proc=32):  82%|████████▏ | 56/68 [00:05<00:00, 21.12 examples/s]Map (num_proc=32):  94%|█████████▍| 64/68 [00:05<00:00, 25.79 examples/s]Map (num_proc=32): 100%|██████████| 68/68 [00:06<00:00, 11.19 examples/s]
+Map (num_proc=32):   0%|          | 0/68 [00:00<?, ? examples/s]Map (num_proc=32):   3%|▎         | 2/68 [00:02<01:08,  1.04s/ examples]Map (num_proc=32):   7%|▋         | 5/68 [00:02<00:22,  2.80 examples/s]Map (num_proc=32):  10%|█         | 7/68 [00:02<00:20,  2.94 examples/s]Map (num_proc=32):  22%|██▏       | 15/68 [00:02<00:06,  8.83 examples/s]Map (num_proc=32):  28%|██▊       | 19/68 [00:03<00:07,  6.56 examples/s]Map (num_proc=32):  40%|███▉      | 27/68 [00:04<00:03, 10.31 examples/s]Map (num_proc=32):  46%|████▌     | 31/68 [00:04<00:04,  8.39 examples/s]Map (num_proc=32):  51%|█████▏    | 35/68 [00:05<00:03, 10.24 examples/s]Map (num_proc=32):  62%|██████▏   | 42/68 [00:05<00:01, 15.32 examples/s]Map (num_proc=32):  71%|███████   | 48/68 [00:05<00:01, 19.55 examples/s]Map (num_proc=32):  76%|███████▋  | 52/68 [00:05<00:00, 19.21 examples/s]Map (num_proc=32): 100%|██████████| 68/68 [00:05<00:00, 29.10 examples/s]Map (num_proc=32): 100%|██████████| 68/68 [00:06<00:00, 11.25 examples/s]
+Map (num_proc=32):   0%|          | 0/68 [00:00<?, ? examples/s]Map (num_proc=32):   3%|▎         | 2/68 [00:01<01:01,  1.07 examples/s]Map (num_proc=32):   7%|▋         | 5/68 [00:02<00:31,  2.02 examples/s]Map (num_proc=32):  12%|█▏        | 8/68 [00:02<00:17,  3.53 examples/s]Map (num_proc=32):  16%|█▌        | 11/68 [00:03<00:11,  5.07 examples/s]Map (num_proc=32):  25%|██▌       | 17/68 [00:03<00:06,  7.73 examples/s]Map (num_proc=32):  31%|███       | 21/68 [00:04<00:06,  6.86 examples/s]Map (num_proc=32):  41%|████      | 28/68 [00:04<00:04,  9.24 examples/s]Map (num_proc=32):  50%|█████     | 34/68 [00:04<00:02, 12.18 examples/s]Map (num_proc=32):  71%|███████   | 48/68 [00:05<00:00, 20.84 examples/s]Map (num_proc=32):  76%|███████▋  | 52/68 [00:05<00:00, 22.79 examples/s]Map (num_proc=32):  85%|████████▌ | 58/68 [00:05<00:00, 23.65 examples/s]Map (num_proc=32):  91%|█████████ | 62/68 [00:05<00:00, 22.69 examples/s]Map (num_proc=32): 100%|██████████| 68/68 [00:05<00:00, 26.16 examples/s]Map (num_proc=32): 100%|██████████| 68/68 [00:06<00:00, 11.24 examples/s]
+Map (num_proc=32):   0%|          | 0/68 [00:00<?, ? examples/s]Map (num_proc=32):   3%|▎         | 2/68 [00:01<01:03,  1.03 examples/s]Map (num_proc=32):   7%|▋         | 5/68 [00:02<00:22,  2.83 examples/s]Map (num_proc=32):  10%|█         | 7/68 [00:02<00:18,  3.24 examples/s]Map (num_proc=32):  18%|█▊        | 12/68 [00:02<00:07,  7.04 examples/s]Map (num_proc=32):  24%|██▎       | 16/68 [00:03<00:08,  6.40 examples/s]Map (num_proc=32):  26%|██▋       | 18/68 [00:03<00:07,  6.62 examples/s]Map (num_proc=32):  41%|████      | 28/68 [00:04<00:03, 10.72 examples/s]Map (num_proc=32):  44%|████▍     | 30/68 [00:04<00:03, 10.38 examples/s]Map (num_proc=32):  47%|████▋     | 32/68 [00:04<00:03, 10.91 examples/s]Map (num_proc=32):  50%|█████     | 34/68 [00:04<00:03, 10.20 examples/s]Map (num_proc=32):  76%|███████▋  | 52/68 [00:05<00:00, 30.31 examples/s]Map (num_proc=32):  85%|████████▌ | 58/68 [00:05<00:00, 24.73 examples/s]Map (num_proc=32):  94%|█████████▍| 64/68 [00:05<00:00, 28.18 examples/s]Map (num_proc=32): 100%|██████████| 68/68 [00:05<00:00, 11.50 examples/s]
+Map (num_proc=32):   0%|          | 0/68 [00:00<?, ? examples/s]Map (num_proc=32):   4%|▍         | 3/68 [00:01<00:40,  1.61 examples/s]Map (num_proc=32):  12%|█▏        | 8/68 [00:02<00:16,  3.66 examples/s]Map (num_proc=32):  18%|█▊        | 12/68 [00:02<00:09,  5.64 examples/s]Map (num_proc=32):  24%|██▎       | 16/68 [00:03<00:09,  5.76 examples/s]Map (num_proc=32):  26%|██▋       | 18/68 [00:03<00:08,  6.25 examples/s]Map (num_proc=32):  29%|██▉       | 20/68 [00:03<00:06,  7.00 examples/s]Map (num_proc=32):  32%|███▏      | 22/68 [00:04<00:06,  7.07 examples/s]Map (num_proc=32):  37%|███▋      | 25/68 [00:04<00:04,  9.03 examples/s]Map (num_proc=32):  50%|█████     | 34/68 [00:04<00:01, 17.23 examples/s]Map (num_proc=32):  56%|█████▌    | 38/68 [00:04<00:01, 15.90 examples/s]Map (num_proc=32):  76%|███████▋  | 52/68 [00:04<00:00, 31.46 examples/s]Map (num_proc=32):  85%|████████▌ | 58/68 [00:05<00:00, 20.12 examples/s]Map (num_proc=32):  94%|█████████▍| 64/68 [00:05<00:00, 23.70 examples/s]Map (num_proc=32): 100%|██████████| 68/68 [00:05<00:00, 11.59 examples/s]
+Map (num_proc=32):   0%|          | 0/68 [00:00<?, ? examples/s]Map (num_proc=32):   3%|▎         | 2/68 [00:01<00:56,  1.17 examples/s]Map (num_proc=32):   6%|▌         | 4/68 [00:02<00:34,  1.87 examples/s]Map (num_proc=32):   9%|▉         | 6/68 [00:02<00:21,  2.90 examples/s]Map (num_proc=32):  16%|█▌        | 11/68 [00:02<00:10,  5.65 examples/s]Map (num_proc=32):  22%|██▏       | 15/68 [00:03<00:07,  7.18 examples/s]Map (num_proc=32):  34%|███▍      | 23/68 [00:04<00:06,  6.70 examples/s]Map (num_proc=32):  40%|███▉      | 27/68 [00:05<00:06,  6.81 examples/s]Map (num_proc=32):  57%|█████▋    | 39/68 [00:05<00:02, 13.23 examples/s]Map (num_proc=32):  65%|██████▍   | 44/68 [00:05<00:01, 14.43 examples/s]Map (num_proc=32):  76%|███████▋  | 52/68 [00:05<00:00, 18.32 examples/s]Map (num_proc=32):  91%|█████████ | 62/68 [00:05<00:00, 24.91 examples/s]Map (num_proc=32): 100%|██████████| 68/68 [00:06<00:00, 23.54 examples/s]Map (num_proc=32): 100%|██████████| 68/68 [00:06<00:00, 10.53 examples/s]
+Map (num_proc=32):   0%|          | 0/68 [00:00<?, ? examples/s]Map (num_proc=32):   3%|▎         | 2/68 [00:02<01:06,  1.01s/ examples]Map (num_proc=32):   6%|▌         | 4/68 [00:02<00:30,  2.10 examples/s]Map (num_proc=32):  16%|█▌        | 11/68 [00:02<00:08,  6.41 examples/s]Map (num_proc=32):  21%|██        | 14/68 [00:03<00:09,  5.95 examples/s]Map (num_proc=32):  24%|██▎       | 16/68 [00:03<00:07,  6.87 examples/s]Map (num_proc=32):  31%|███       | 21/68 [00:03<00:04, 10.58 examples/s]Map (num_proc=32):  34%|███▍      | 23/68 [00:03<00:04, 10.67 examples/s]Map (num_proc=32):  47%|████▋     | 32/68 [00:04<00:03,  9.72 examples/s]Map (num_proc=32):  56%|█████▌    | 38/68 [00:04<00:02, 12.76 examples/s]Map (num_proc=32):  62%|██████▏   | 42/68 [00:04<00:01, 14.29 examples/s]Map (num_proc=32):  65%|██████▍   | 44/68 [00:05<00:01, 12.19 examples/s]Map (num_proc=32):  79%|███████▉  | 54/68 [00:05<00:00, 20.45 examples/s]Map (num_proc=32):  97%|█████████▋| 66/68 [00:05<00:00, 27.66 examples/s]Map (num_proc=32): 100%|██████████| 68/68 [00:05<00:00, 11.43 examples/s]
+Map (num_proc=32):   0%|          | 0/58 [00:00<?, ? examples/s]Map (num_proc=32):   3%|▎         | 2/58 [00:01<00:42,  1.32 examples/s]Map (num_proc=32):   7%|▋         | 4/58 [00:01<00:24,  2.20 examples/s]Map (num_proc=32):  17%|█▋        | 10/58 [00:02<00:06,  7.09 examples/s]Map (num_proc=32):  24%|██▍       | 14/58 [00:02<00:07,  5.71 examples/s]Map (num_proc=32):  28%|██▊       | 16/58 [00:03<00:06,  6.38 examples/s]Map (num_proc=32):  38%|███▊      | 22/58 [00:03<00:03, 10.95 examples/s]Map (num_proc=32):  45%|████▍     | 26/58 [00:03<00:03, 10.39 examples/s]Map (num_proc=32):  52%|█████▏    | 30/58 [00:04<00:02, 10.00 examples/s]Map (num_proc=32):  57%|█████▋    | 33/58 [00:04<00:02, 11.41 examples/s]Map (num_proc=32):  60%|██████    | 35/58 [00:04<00:01, 11.53 examples/s]Map (num_proc=32):  69%|██████▉   | 40/58 [00:04<00:01, 13.92 examples/s]Map (num_proc=32):  76%|███████▌  | 44/58 [00:04<00:00, 15.37 examples/s]Map (num_proc=32):  88%|████████▊ | 51/58 [00:05<00:00, 17.84 examples/s]Map (num_proc=32):  91%|█████████▏| 53/58 [00:05<00:00, 14.81 examples/s]Map (num_proc=32): 100%|██████████| 58/58 [00:05<00:00, 10.01 examples/s]
+[32m[2023-11-10 09:07:16,443] [    INFO][0m - ============================================================[0m
+[32m[2023-11-10 09:07:16,443] [    INFO][0m -     Training Configuration Arguments    [0m
+[32m[2023-11-10 09:07:16,443] [    INFO][0m - paddle commit id              : 3a1b1659a405a044ce806fbe027cc146f1193e6d[0m
+[32m[2023-11-10 09:07:16,443] [    INFO][0m - _no_sync_in_gradient_accumulation: True[0m
+[32m[2023-11-10 09:07:16,443] [    INFO][0m - adam_beta1                    : 0.9[0m
+[32m[2023-11-10 09:07:16,443] [    INFO][0m - adam_beta2                    : 0.999[0m
+[32m[2023-11-10 09:07:16,443] [    INFO][0m - adam_epsilon                  : 1e-08[0m
+[32m[2023-11-10 09:07:16,443] [    INFO][0m - amp_custom_black_list         : None[0m
+[32m[2023-11-10 09:07:16,444] [    INFO][0m - amp_custom_white_list         : None[0m
+[32m[2023-11-10 09:07:16,444] [    INFO][0m - amp_master_grad               : False[0m
+[32m[2023-11-10 09:07:16,444] [    INFO][0m - bf16                          : False[0m
+[32m[2023-11-10 09:07:16,444] [    INFO][0m - bf16_full_eval                : False[0m
+[32m[2023-11-10 09:07:16,444] [    INFO][0m - current_device                : gpu:2[0m
+[32m[2023-11-10 09:07:16,444] [    INFO][0m - data_parallel_rank            : 1[0m
+[32m[2023-11-10 09:07:16,444] [    INFO][0m - dataloader_drop_last          : False[0m
+[32m[2023-11-10 09:07:16,444] [    INFO][0m - dataloader_num_workers        : 0[0m
+[32m[2023-11-10 09:07:16,444] [    INFO][0m - dataset_rank                  : 1[0m
+[32m[2023-11-10 09:07:16,444] [    INFO][0m - dataset_world_size            : 3[0m
+[32m[2023-11-10 09:07:16,444] [    INFO][0m - device                        : gpu[0m
+[32m[2023-11-10 09:07:16,444] [    INFO][0m - disable_tqdm                  : False[0m
+[32m[2023-11-10 09:07:16,444] [    INFO][0m - do_eval                       : True[0m
+[32m[2023-11-10 09:07:16,445] [    INFO][0m - do_export                     : False[0m
+[32m[2023-11-10 09:07:16,445] [    INFO][0m - do_predict                    : False[0m
+[32m[2023-11-10 09:07:16,445] [    INFO][0m - do_train                      : True[0m
+[32m[2023-11-10 09:07:16,445] [    INFO][0m - eval_accumulation_steps       : None[0m
+[32m[2023-11-10 09:07:16,445] [    INFO][0m - eval_batch_size               : 6[0m
+[32m[2023-11-10 09:07:16,445] [    INFO][0m - eval_steps                    : 1000[0m
+[32m[2023-11-10 09:07:16,445] [    INFO][0m - evaluation_strategy           : IntervalStrategy.STEPS[0m
+[32m[2023-11-10 09:07:16,445] [    INFO][0m - flatten_param_grads           : False[0m
+[32m[2023-11-10 09:07:16,445] [    INFO][0m - fp16                          : False[0m
+[32m[2023-11-10 09:07:16,445] [    INFO][0m - fp16_full_eval                : False[0m
+[32m[2023-11-10 09:07:16,445] [    INFO][0m - fp16_opt_level                : O1[0m
+[32m[2023-11-10 09:07:16,445] [    INFO][0m - gradient_accumulation_steps   : 1[0m
+[32m[2023-11-10 09:07:16,445] [    INFO][0m - greater_is_better             : True[0m
+[32m[2023-11-10 09:07:16,445] [    INFO][0m - hybrid_parallel_topo_order    : None[0m
+[32m[2023-11-10 09:07:16,445] [    INFO][0m - ignore_data_skip              : False[0m
+[32m[2023-11-10 09:07:16,446] [    INFO][0m - label_names                   : ['start_positions', 'end_positions'][0m
+[32m[2023-11-10 09:07:16,446] [    INFO][0m - lazy_data_processing          : True[0m
+[32m[2023-11-10 09:07:16,446] [    INFO][0m - learning_rate                 : 2e-05[0m
+[32m[2023-11-10 09:07:16,446] [    INFO][0m - load_best_model_at_end        : True[0m
+[32m[2023-11-10 09:07:16,446] [    INFO][0m - load_sharded_model            : False[0m
+[32m[2023-11-10 09:07:16,446] [    INFO][0m - local_process_index           : 1[0m
+[32m[2023-11-10 09:07:16,446] [    INFO][0m - local_rank                    : 1[0m
+[32m[2023-11-10 09:07:16,446] [    INFO][0m - log_level                     : -1[0m
+[32m[2023-11-10 09:07:16,446] [    INFO][0m - log_level_replica             : -1[0m
+[32m[2023-11-10 09:07:16,446] [    INFO][0m - log_on_each_node              : True[0m
+[32m[2023-11-10 09:07:16,446] [    INFO][0m - logging_dir                   : ./models/fidelity/runs/Nov10_09-04-45_ip-172-31-1-102[0m
+[32m[2023-11-10 09:07:16,446] [    INFO][0m - logging_first_step            : False[0m
+[32m[2023-11-10 09:07:16,446] [    INFO][0m - logging_steps                 : 500[0m
+[32m[2023-11-10 09:07:16,446] [    INFO][0m - logging_strategy              : IntervalStrategy.STEPS[0m
+[32m[2023-11-10 09:07:16,446] [    INFO][0m - lr_end                        : 1e-07[0m
+[32m[2023-11-10 09:07:16,447] [    INFO][0m - lr_scheduler_type             : SchedulerType.LINEAR[0m
+[32m[2023-11-10 09:07:16,447] [    INFO][0m - max_evaluate_steps            : -1[0m
+[32m[2023-11-10 09:07:16,447] [    INFO][0m - max_grad_norm                 : 1.0[0m
+[32m[2023-11-10 09:07:16,447] [    INFO][0m - max_steps                     : -1[0m
+[32m[2023-11-10 09:07:16,447] [    INFO][0m - metric_for_best_model         : anls[0m
+[32m[2023-11-10 09:07:16,447] [    INFO][0m - minimum_eval_times            : None[0m
+[32m[2023-11-10 09:07:16,447] [    INFO][0m - no_cuda                       : False[0m
+[32m[2023-11-10 09:07:16,447] [    INFO][0m - num_cycles                    : 0.5[0m
+[32m[2023-11-10 09:07:16,447] [    INFO][0m - num_train_epochs              : 4.0[0m
+[32m[2023-11-10 09:07:16,447] [    INFO][0m - optim                         : OptimizerNames.ADAMW[0m
+[32m[2023-11-10 09:07:16,447] [    INFO][0m - optimizer_name_suffix         : None[0m
+[32m[2023-11-10 09:07:16,447] [    INFO][0m - output_dir                    : ./models/fidelity/[0m
+[32m[2023-11-10 09:07:16,447] [    INFO][0m - overwrite_output_dir          : True[0m
+[32m[2023-11-10 09:07:16,447] [    INFO][0m - past_index                    : -1[0m
+[32m[2023-11-10 09:07:16,447] [    INFO][0m - per_device_eval_batch_size    : 6[0m
+[32m[2023-11-10 09:07:16,448] [    INFO][0m - per_device_train_batch_size   : 6[0m
+[32m[2023-11-10 09:07:16,448] [    INFO][0m - pipeline_parallel_config      : [0m
+[32m[2023-11-10 09:07:16,448] [    INFO][0m - pipeline_parallel_degree      : -1[0m
+[32m[2023-11-10 09:07:16,448] [    INFO][0m - pipeline_parallel_rank        : 0[0m
+[32m[2023-11-10 09:07:16,448] [    INFO][0m - power                         : 1.0[0m
+[32m[2023-11-10 09:07:16,448] [    INFO][0m - prediction_loss_only          : False[0m
+[32m[2023-11-10 09:07:16,448] [    INFO][0m - process_index                 : 1[0m
+[32m[2023-11-10 09:07:16,448] [    INFO][0m - recompute                     : False[0m
+[32m[2023-11-10 09:07:16,448] [    INFO][0m - remove_unused_columns         : True[0m
+[32m[2023-11-10 09:07:16,448] [    INFO][0m - report_to                     : ['visualdl'][0m
+[32m[2023-11-10 09:07:16,448] [    INFO][0m - resume_from_checkpoint        : None[0m
+[32m[2023-11-10 09:07:16,448] [    INFO][0m - run_name                      : ./models/fidelity/[0m
+[32m[2023-11-10 09:07:16,448] [    INFO][0m - save_on_each_node             : False[0m
+[32m[2023-11-10 09:07:16,448] [    INFO][0m - save_sharded_model            : False[0m
+[32m[2023-11-10 09:07:16,449] [    INFO][0m - save_steps                    : 1000[0m
+[32m[2023-11-10 09:07:16,449] [    INFO][0m - save_strategy                 : IntervalStrategy.STEPS[0m
+[32m[2023-11-10 09:07:16,449] [    INFO][0m - save_total_limit              : 1[0m
+[32m[2023-11-10 09:07:16,449] [    INFO][0m - scale_loss                    : 32768[0m
+[32m[2023-11-10 09:07:16,449] [    INFO][0m - seed                          : 1000[0m
+[32m[2023-11-10 09:07:16,449] [    INFO][0m - sharding                      : [][0m
+[32m[2023-11-10 09:07:16,449] [    INFO][0m - sharding_degree               : -1[0m
+[32m[2023-11-10 09:07:16,449] [    INFO][0m - sharding_parallel_config      : [0m
+[32m[2023-11-10 09:07:16,449] [    INFO][0m - sharding_parallel_degree      : -1[0m
+[32m[2023-11-10 09:07:16,449] [    INFO][0m - sharding_parallel_rank        : 0[0m
+[32m[2023-11-10 09:07:16,449] [    INFO][0m - should_load_sharding_stage1_model: False[0m
+[32m[2023-11-10 09:07:16,449] [    INFO][0m - should_log                    : False[0m
+[32m[2023-11-10 09:07:16,449] [    INFO][0m - should_save                   : False[0m
+[32m[2023-11-10 09:07:16,449] [    INFO][0m - should_save_model_state       : False[0m
+[32m[2023-11-10 09:07:16,449] [    INFO][0m - should_save_sharding_stage1_model: False[0m
+[32m[2023-11-10 09:07:16,450] [    INFO][0m - skip_memory_metrics           : True[0m
+[32m[2023-11-10 09:07:16,450] [    INFO][0m - skip_profile_timer            : True[0m
+[32m[2023-11-10 09:07:16,450] [    INFO][0m - tensor_parallel_degree        : -1[0m
+[32m[2023-11-10 09:07:16,450] [    INFO][0m - tensor_parallel_rank          : 0[0m
+[32m[2023-11-10 09:07:16,450] [    INFO][0m - train_batch_size              : 6[0m
+[32m[2023-11-10 09:07:16,450] [    INFO][0m - use_hybrid_parallel           : False[0m
+[32m[2023-11-10 09:07:16,450] [    INFO][0m - warmup_ratio                  : 0.05[0m
+[32m[2023-11-10 09:07:16,450] [    INFO][0m - warmup_steps                  : 0[0m
+[32m[2023-11-10 09:07:16,450] [    INFO][0m - weight_decay                  : 0.0[0m
+[32m[2023-11-10 09:07:16,450] [    INFO][0m - weight_name_suffix            : None[0m
+[32m[2023-11-10 09:07:16,450] [    INFO][0m - world_size                    : 3[0m
+[32m[2023-11-10 09:07:16,450] [    INFO][0m - [0m
+[32m[2023-11-10 09:07:16,451] [    INFO][0m - The following columns in the training set  don't have a corresponding argument in `ErnieLayoutForQuestionAnswering.forward` and have been ignored: token_is_max_context, start_labels, token_to_orig_map, question_id, end_labels, tokens, id, questions. If token_is_max_context, start_labels, token_to_orig_map, question_id, end_labels, tokens, id, questions are not expected by `ErnieLayoutForQuestionAnswering.forward`,  you can safely ignore this message.[0m
+[32m[2023-11-10 09:07:23,437] [    INFO][0m - ***** Running training *****[0m
+[32m[2023-11-10 09:07:23,437] [    INFO][0m -   Num examples = 13,978[0m
+[32m[2023-11-10 09:07:23,437] [    INFO][0m -   Num Epochs = 4[0m
+[32m[2023-11-10 09:07:23,437] [    INFO][0m -   Instantaneous batch size per device = 6[0m
+[32m[2023-11-10 09:07:23,437] [    INFO][0m -   Total train batch size (w. parallel, distributed & accumulation) = 18[0m
+[32m[2023-11-10 09:07:23,437] [    INFO][0m -   Gradient Accumulation steps = 1[0m
+[32m[2023-11-10 09:07:23,437] [    INFO][0m -   Total optimization steps = 3,108[0m
+[32m[2023-11-10 09:07:23,437] [    INFO][0m -   Total num train samples = 55,912[0m
+[32m[2023-11-10 09:07:23,440] [    INFO][0m -   Number of trainable parameters = 281,693,122 (per device)[0m
+[32m[2023-11-10 09:31:02,699] [    INFO][0m - The following columns in the evaluation set  don't have a corresponding argument in `ErnieLayoutForQuestionAnswering.forward` and have been ignored: token_is_max_context, start_labels, token_to_orig_map, question_id, end_labels, tokens, id, questions. If token_is_max_context, start_labels, token_to_orig_map, question_id, end_labels, tokens, id, questions are not expected by `ErnieLayoutForQuestionAnswering.forward`,  you can safely ignore this message.[0m
+[32m[2023-11-10 09:31:03,144] [    INFO][0m - ***** Running Evaluation *****[0m
+[32m[2023-11-10 09:31:03,145] [    INFO][0m -   Num examples = 852[0m
+[32m[2023-11-10 09:31:03,145] [    INFO][0m -   Total prediction steps = 48[0m
+[32m[2023-11-10 09:31:03,145] [    INFO][0m -   Pre device batch size = 6[0m
+[32m[2023-11-10 09:31:03,145] [    INFO][0m -   Total Batch size = 18[0m
+[32m[2023-11-10 09:55:21,950] [    INFO][0m - The following columns in the evaluation set  don't have a corresponding argument in `ErnieLayoutForQuestionAnswering.forward` and have been ignored: token_is_max_context, start_labels, token_to_orig_map, question_id, end_labels, tokens, id, questions. If token_is_max_context, start_labels, token_to_orig_map, question_id, end_labels, tokens, id, questions are not expected by `ErnieLayoutForQuestionAnswering.forward`,  you can safely ignore this message.[0m
+[32m[2023-11-10 09:55:22,275] [    INFO][0m - ***** Running Evaluation *****[0m
+[32m[2023-11-10 09:55:22,275] [    INFO][0m -   Num examples = 852[0m
+[32m[2023-11-10 09:55:22,275] [    INFO][0m -   Total prediction steps = 48[0m
+[32m[2023-11-10 09:55:22,275] [    INFO][0m -   Pre device batch size = 6[0m
+[32m[2023-11-10 09:55:22,275] [    INFO][0m -   Total Batch size = 18[0m
+[32m[2023-11-10 10:19:41,691] [    INFO][0m - The following columns in the evaluation set  don't have a corresponding argument in `ErnieLayoutForQuestionAnswering.forward` and have been ignored: token_is_max_context, start_labels, token_to_orig_map, question_id, end_labels, tokens, id, questions. If token_is_max_context, start_labels, token_to_orig_map, question_id, end_labels, tokens, id, questions are not expected by `ErnieLayoutForQuestionAnswering.forward`,  you can safely ignore this message.[0m
+[32m[2023-11-10 10:19:42,133] [    INFO][0m - ***** Running Evaluation *****[0m
+[32m[2023-11-10 10:19:42,134] [    INFO][0m -   Num examples = 852[0m
+[32m[2023-11-10 10:19:42,134] [    INFO][0m -   Total prediction steps = 48[0m
+[32m[2023-11-10 10:19:42,134] [    INFO][0m -   Pre device batch size = 6[0m
+[32m[2023-11-10 10:19:42,134] [    INFO][0m -   Total Batch size = 18[0m
+[32m[2023-11-10 10:22:54,478] [    INFO][0m - The following columns in the evaluation set  don't have a corresponding argument in `ErnieLayoutForQuestionAnswering.forward` and have been ignored: token_is_max_context, start_labels, token_to_orig_map, question_id, end_labels, tokens, id, questions. If token_is_max_context, start_labels, token_to_orig_map, question_id, end_labels, tokens, id, questions are not expected by `ErnieLayoutForQuestionAnswering.forward`,  you can safely ignore this message.[0m
+[32m[2023-11-10 10:22:54,919] [    INFO][0m - ***** Running Evaluation *****[0m
+[32m[2023-11-10 10:22:54,919] [    INFO][0m -   Num examples = 852[0m
+[32m[2023-11-10 10:22:54,919] [    INFO][0m -   Total prediction steps = 48[0m
+[32m[2023-11-10 10:22:54,919] [    INFO][0m -   Pre device batch size = 6[0m
+[32m[2023-11-10 10:22:54,919] [    INFO][0m -   Total Batch size = 18[0m
+[32m[2023-11-10 10:23:28,169] [    INFO][0m - 
+Training completed. 
+[0m
+[32m[2023-11-10 10:23:36,147] [    INFO][0m - Loading best model from ./models/fidelity/checkpoint-1000 (score: 61.12011982881637).[0m
+[32m[2023-11-10 10:23:37,084] [    INFO][0m - set state-dict :([], [])[0m
+[32m[2023-11-10 10:23:37,134] [    INFO][0m - The following columns in the evaluation set  don't have a corresponding argument in `ErnieLayoutForQuestionAnswering.forward` and have been ignored: token_is_max_context, start_labels, token_to_orig_map, question_id, end_labels, tokens, id, questions. If token_is_max_context, start_labels, token_to_orig_map, question_id, end_labels, tokens, id, questions are not expected by `ErnieLayoutForQuestionAnswering.forward`,  you can safely ignore this message.[0m
+[32m[2023-11-10 10:23:37,582] [    INFO][0m - ***** Running Evaluation *****[0m
+[32m[2023-11-10 10:23:37,582] [    INFO][0m -   Num examples = 852[0m
+[32m[2023-11-10 10:23:37,582] [    INFO][0m -   Total prediction steps = 48[0m
+[32m[2023-11-10 10:23:37,583] [    INFO][0m -   Pre device batch size = 6[0m
+[32m[2023-11-10 10:23:37,583] [    INFO][0m -   Total Batch size = 18[0m
+[33m[2023-11-10 10:31:51,636] [ WARNING][0m - Detected that datasets module was imported before paddlenlp. This may cause PaddleNLP datasets to be unavalible in intranet. Please import paddlenlp before datasets module to avoid download issues[0m
+[33m[2023-11-10 10:31:52,699] [ WARNING][0m - evaluation_strategy reset to IntervalStrategy.STEPS for do_eval is True. you can also set evaluation_strategy='epoch'.[0m
+======================= Modified FLAGS detected =======================
+FLAGS(name='FLAGS_selected_gpus', current_value='1', default_value='')
+=======================================================================
+I1110 10:31:52.700343 172462 tcp_utils.cc:107] Retry to connect to 172.31.1.102:42301 while the server is not yet listening.
+I1110 10:31:55.700539 172462 tcp_utils.cc:130] Successfully connected to 172.31.1.102:42301
+W1110 10:31:57.394275 172462 gpu_resources.cc:119] Please NOTE: device: 1, GPU Compute Capability: 7.5, Driver API Version: 12.3, Runtime API Version: 11.7
+W1110 10:31:57.400121 172462 gpu_resources.cc:149] device: 1, cuDNN Version: 8.5.
+[32m[2023-11-10 10:31:58,004] [    INFO][0m - The default value for the training argument `--report_to` will change in v5 (from all installed integrations to none). In v5, you will need to use `--report_to all` to get the same behavior as now. You should start updating your code and make this info disappear :-).[0m
+[32m[2023-11-10 10:31:58,004] [    INFO][0m - ============================================================[0m
+[32m[2023-11-10 10:31:58,005] [    INFO][0m -      Model Configuration Arguments      [0m
+[32m[2023-11-10 10:31:58,005] [    INFO][0m - paddle commit id              : 3a1b1659a405a044ce806fbe027cc146f1193e6d[0m
+[32m[2023-11-10 10:31:58,005] [    INFO][0m - cache_dir                     : None[0m
+[32m[2023-11-10 10:31:58,005] [    INFO][0m - config_name                   : None[0m
+[32m[2023-11-10 10:31:58,005] [    INFO][0m - model_name_or_path            : doc15k[0m
+[32m[2023-11-10 10:31:58,005] [    INFO][0m - tokenizer_name                : None[0m
+[32m[2023-11-10 10:31:58,005] [    INFO][0m - [0m
+[32m[2023-11-10 10:31:58,005] [    INFO][0m - ============================================================[0m
+[32m[2023-11-10 10:31:58,005] [    INFO][0m -       Data Configuration Arguments      [0m
+[32m[2023-11-10 10:31:58,005] [    INFO][0m - paddle commit id              : 3a1b1659a405a044ce806fbe027cc146f1193e6d[0m
+[32m[2023-11-10 10:31:58,005] [    INFO][0m - dataset_config_name           : None[0m
+[32m[2023-11-10 10:31:58,005] [    INFO][0m - dataset_name                  : fidelity[0m
+[32m[2023-11-10 10:31:58,006] [    INFO][0m - doc_stride                    : 128[0m
+[32m[2023-11-10 10:31:58,006] [    INFO][0m - label_all_tokens              : False[0m
+[32m[2023-11-10 10:31:58,006] [    INFO][0m - lang                          : en[0m
+[32m[2023-11-10 10:31:58,006] [    INFO][0m - max_seq_length                : 512[0m
+[32m[2023-11-10 10:31:58,006] [    INFO][0m - max_test_samples              : None[0m
+[32m[2023-11-10 10:31:58,006] [    INFO][0m - max_train_samples             : None[0m
+[32m[2023-11-10 10:31:58,006] [    INFO][0m - max_val_samples               : None[0m
+[32m[2023-11-10 10:31:58,006] [    INFO][0m - overwrite_cache               : False[0m
+[32m[2023-11-10 10:31:58,006] [    INFO][0m - pad_to_max_length             : True[0m
+[32m[2023-11-10 10:31:58,006] [    INFO][0m - pattern                       : mrc[0m
+[32m[2023-11-10 10:31:58,006] [    INFO][0m - preprocessing_num_workers     : 32[0m
+[32m[2023-11-10 10:31:58,006] [    INFO][0m - return_entity_level_metrics   : False[0m
+[32m[2023-11-10 10:31:58,006] [    INFO][0m - rst_converter                 : None[0m
+[32m[2023-11-10 10:31:58,006] [    INFO][0m - target_size                   : 1000[0m
+[32m[2023-11-10 10:31:58,006] [    INFO][0m - task_name                     : ner[0m
+[32m[2023-11-10 10:31:58,006] [    INFO][0m - task_type                     : ner[0m
+[32m[2023-11-10 10:31:58,006] [    INFO][0m - train_log_file                : None[0m
+[32m[2023-11-10 10:31:58,007] [    INFO][0m - train_nshard                  : 16[0m
+[32m[2023-11-10 10:31:58,007] [    INFO][0m - use_segment_box               : False[0m
+[32m[2023-11-10 10:31:58,007] [    INFO][0m - [0m
+[32m[2023-11-10 10:31:58,095] [    INFO][0m - We are using <class 'paddlenlp.transformers.ernie_layout.tokenizer.ErnieLayoutTokenizer'> to load 'doc15k'.[0m
+[32m[2023-11-10 10:31:58,663] [    INFO][0m - We are using <class 'paddlenlp.transformers.ernie_layout.modeling.ErnieLayoutForQuestionAnswering'> to load 'doc15k'.[0m
+[32m[2023-11-10 10:31:58,664] [    INFO][0m - Loading configuration file doc15k/config.json[0m
+[32m[2023-11-10 10:31:58,664] [    INFO][0m - Loading weights file doc15k/model_state.pdparams[0m
+[32m[2023-11-10 10:31:59,973] [    INFO][0m - Loaded weights file from disk, setting weights to model.[0m
+[32m[2023-11-10 10:32:01,433] [    INFO][0m - All model checkpoint weights were used when initializing ErnieLayoutForQuestionAnswering.
+[0m
+[32m[2023-11-10 10:32:01,434] [    INFO][0m - All the weights of ErnieLayoutForQuestionAnswering were initialized from the model checkpoint at doc15k.
+If your task is similar to the task the model of the checkpoint was trained on, you can already use ErnieLayoutForQuestionAnswering for predictions without further training.[0m
+[32m[2023-11-10 10:32:01,467] [    INFO][0m - spliting train dataset into 16 shard[0m
+[32m[2023-11-10 10:32:38,222] [    INFO][0m - ============================================================[0m
+[32m[2023-11-10 10:32:38,222] [    INFO][0m -     Training Configuration Arguments    [0m
+[32m[2023-11-10 10:32:38,222] [    INFO][0m - paddle commit id              : 3a1b1659a405a044ce806fbe027cc146f1193e6d[0m
+[32m[2023-11-10 10:32:38,222] [    INFO][0m - _no_sync_in_gradient_accumulation: True[0m
+[32m[2023-11-10 10:32:38,222] [    INFO][0m - adam_beta1                    : 0.9[0m
+[32m[2023-11-10 10:32:38,222] [    INFO][0m - adam_beta2                    : 0.999[0m
+[32m[2023-11-10 10:32:38,223] [    INFO][0m - adam_epsilon                  : 1e-08[0m
+[32m[2023-11-10 10:32:38,223] [    INFO][0m - amp_custom_black_list         : None[0m
+[32m[2023-11-10 10:32:38,223] [    INFO][0m - amp_custom_white_list         : None[0m
+[32m[2023-11-10 10:32:38,223] [    INFO][0m - amp_master_grad               : False[0m
+[32m[2023-11-10 10:32:38,223] [    INFO][0m - bf16                          : False[0m
+[32m[2023-11-10 10:32:38,223] [    INFO][0m - bf16_full_eval                : False[0m
+[32m[2023-11-10 10:32:38,223] [    INFO][0m - current_device                : gpu:1[0m
+[32m[2023-11-10 10:32:38,223] [    INFO][0m - data_parallel_rank            : 1[0m
+[32m[2023-11-10 10:32:38,223] [    INFO][0m - dataloader_drop_last          : False[0m
+[32m[2023-11-10 10:32:38,223] [    INFO][0m - dataloader_num_workers        : 0[0m
+[32m[2023-11-10 10:32:38,223] [    INFO][0m - dataset_rank                  : 1[0m
+[32m[2023-11-10 10:32:38,223] [    INFO][0m - dataset_world_size            : 4[0m
+[32m[2023-11-10 10:32:38,223] [    INFO][0m - device                        : gpu[0m
+[32m[2023-11-10 10:32:38,223] [    INFO][0m - disable_tqdm                  : False[0m
+[32m[2023-11-10 10:32:38,224] [    INFO][0m - do_eval                       : True[0m
+[32m[2023-11-10 10:32:38,224] [    INFO][0m - do_export                     : False[0m
+[32m[2023-11-10 10:32:38,224] [    INFO][0m - do_predict                    : False[0m
+[32m[2023-11-10 10:32:38,224] [    INFO][0m - do_train                      : True[0m
+[32m[2023-11-10 10:32:38,224] [    INFO][0m - eval_accumulation_steps       : None[0m
+[32m[2023-11-10 10:32:38,224] [    INFO][0m - eval_batch_size               : 6[0m
+[32m[2023-11-10 10:32:38,224] [    INFO][0m - eval_steps                    : 100[0m
+[32m[2023-11-10 10:32:38,224] [    INFO][0m - evaluation_strategy           : IntervalStrategy.STEPS[0m
+[32m[2023-11-10 10:32:38,224] [    INFO][0m - flatten_param_grads           : False[0m
+[32m[2023-11-10 10:32:38,224] [    INFO][0m - fp16                          : False[0m
+[32m[2023-11-10 10:32:38,224] [    INFO][0m - fp16_full_eval                : False[0m
+[32m[2023-11-10 10:32:38,224] [    INFO][0m - fp16_opt_level                : O1[0m
+[32m[2023-11-10 10:32:38,224] [    INFO][0m - gradient_accumulation_steps   : 1[0m
+[32m[2023-11-10 10:32:38,224] [    INFO][0m - greater_is_better             : True[0m
+[32m[2023-11-10 10:32:38,224] [    INFO][0m - hybrid_parallel_topo_order    : None[0m
+[32m[2023-11-10 10:32:38,225] [    INFO][0m - ignore_data_skip              : False[0m
+[32m[2023-11-10 10:32:38,225] [    INFO][0m - label_names                   : ['start_positions', 'end_positions'][0m
+[32m[2023-11-10 10:32:38,225] [    INFO][0m - lazy_data_processing          : True[0m
+[32m[2023-11-10 10:32:38,225] [    INFO][0m - learning_rate                 : 2e-05[0m
+[32m[2023-11-10 10:32:38,225] [    INFO][0m - load_best_model_at_end        : True[0m
+[32m[2023-11-10 10:32:38,225] [    INFO][0m - load_sharded_model            : False[0m
+[32m[2023-11-10 10:32:38,225] [    INFO][0m - local_process_index           : 1[0m
+[32m[2023-11-10 10:32:38,225] [    INFO][0m - local_rank                    : 1[0m
+[32m[2023-11-10 10:32:38,225] [    INFO][0m - log_level                     : -1[0m
+[32m[2023-11-10 10:32:38,225] [    INFO][0m - log_level_replica             : -1[0m
+[32m[2023-11-10 10:32:38,225] [    INFO][0m - log_on_each_node              : True[0m
+[32m[2023-11-10 10:32:38,225] [    INFO][0m - logging_dir                   : ./models/fidelity_save_100/runs/Nov10_10-31-52_ip-172-31-1-102[0m
+[32m[2023-11-10 10:32:38,225] [    INFO][0m - logging_first_step            : False[0m
+[32m[2023-11-10 10:32:38,225] [    INFO][0m - logging_steps                 : 500[0m
+[32m[2023-11-10 10:32:38,225] [    INFO][0m - logging_strategy              : IntervalStrategy.STEPS[0m
+[32m[2023-11-10 10:32:38,226] [    INFO][0m - lr_end                        : 1e-07[0m
+[32m[2023-11-10 10:32:38,226] [    INFO][0m - lr_scheduler_type             : SchedulerType.LINEAR[0m
+[32m[2023-11-10 10:32:38,226] [    INFO][0m - max_evaluate_steps            : -1[0m
+[32m[2023-11-10 10:32:38,226] [    INFO][0m - max_grad_norm                 : 1.0[0m
+[32m[2023-11-10 10:32:38,226] [    INFO][0m - max_steps                     : -1[0m
+[32m[2023-11-10 10:32:38,226] [    INFO][0m - metric_for_best_model         : anls[0m
+[32m[2023-11-10 10:32:38,226] [    INFO][0m - minimum_eval_times            : None[0m
+[32m[2023-11-10 10:32:38,226] [    INFO][0m - no_cuda                       : False[0m
+[32m[2023-11-10 10:32:38,226] [    INFO][0m - num_cycles                    : 0.5[0m
+[32m[2023-11-10 10:32:38,226] [    INFO][0m - num_train_epochs              : 4.0[0m
+[32m[2023-11-10 10:32:38,226] [    INFO][0m - optim                         : OptimizerNames.ADAMW[0m
+[32m[2023-11-10 10:32:38,226] [    INFO][0m - optimizer_name_suffix         : None[0m
+[32m[2023-11-10 10:32:38,226] [    INFO][0m - output_dir                    : ./models/fidelity_save_100[0m
+[32m[2023-11-10 10:32:38,226] [    INFO][0m - overwrite_output_dir          : True[0m
+[32m[2023-11-10 10:32:38,226] [    INFO][0m - past_index                    : -1[0m
+[32m[2023-11-10 10:32:38,226] [    INFO][0m - per_device_eval_batch_size    : 6[0m
+[32m[2023-11-10 10:32:38,227] [    INFO][0m - per_device_train_batch_size   : 6[0m
+[32m[2023-11-10 10:32:38,227] [    INFO][0m - pipeline_parallel_config      : [0m
+[32m[2023-11-10 10:32:38,227] [    INFO][0m - pipeline_parallel_degree      : -1[0m
+[32m[2023-11-10 10:32:38,227] [    INFO][0m - pipeline_parallel_rank        : 0[0m
+[32m[2023-11-10 10:32:38,227] [    INFO][0m - power                         : 1.0[0m
+[32m[2023-11-10 10:32:38,227] [    INFO][0m - prediction_loss_only          : False[0m
+[32m[2023-11-10 10:32:38,227] [    INFO][0m - process_index                 : 1[0m
+[32m[2023-11-10 10:32:38,227] [    INFO][0m - recompute                     : False[0m
+[32m[2023-11-10 10:32:38,227] [    INFO][0m - remove_unused_columns         : True[0m
+[32m[2023-11-10 10:32:38,227] [    INFO][0m - report_to                     : ['visualdl'][0m
+[32m[2023-11-10 10:32:38,227] [    INFO][0m - resume_from_checkpoint        : None[0m
+[32m[2023-11-10 10:32:38,227] [    INFO][0m - run_name                      : ./models/fidelity_save_100[0m
+[32m[2023-11-10 10:32:38,227] [    INFO][0m - save_on_each_node             : False[0m
+[32m[2023-11-10 10:32:38,227] [    INFO][0m - save_sharded_model            : False[0m
+[32m[2023-11-10 10:32:38,227] [    INFO][0m - save_steps                    : 100[0m
+[32m[2023-11-10 10:32:38,227] [    INFO][0m - save_strategy                 : IntervalStrategy.STEPS[0m
+[32m[2023-11-10 10:32:38,228] [    INFO][0m - save_total_limit              : 1[0m
+[32m[2023-11-10 10:32:38,228] [    INFO][0m - scale_loss                    : 32768[0m
+[32m[2023-11-10 10:32:38,228] [    INFO][0m - seed                          : 1000[0m
+[32m[2023-11-10 10:32:38,228] [    INFO][0m - sharding                      : [][0m
+[32m[2023-11-10 10:32:38,228] [    INFO][0m - sharding_degree               : -1[0m
+[32m[2023-11-10 10:32:38,228] [    INFO][0m - sharding_parallel_config      : [0m
+[32m[2023-11-10 10:32:38,228] [    INFO][0m - sharding_parallel_degree      : -1[0m
+[32m[2023-11-10 10:32:38,228] [    INFO][0m - sharding_parallel_rank        : 0[0m
+[32m[2023-11-10 10:32:38,228] [    INFO][0m - should_load_sharding_stage1_model: False[0m
+[32m[2023-11-10 10:32:38,228] [    INFO][0m - should_log                    : False[0m
+[32m[2023-11-10 10:32:38,228] [    INFO][0m - should_save                   : False[0m
+[32m[2023-11-10 10:32:38,228] [    INFO][0m - should_save_model_state       : False[0m
+[32m[2023-11-10 10:32:38,228] [    INFO][0m - should_save_sharding_stage1_model: False[0m
+[32m[2023-11-10 10:32:38,228] [    INFO][0m - skip_memory_metrics           : True[0m
+[32m[2023-11-10 10:32:38,228] [    INFO][0m - skip_profile_timer            : True[0m
+[32m[2023-11-10 10:32:38,229] [    INFO][0m - tensor_parallel_degree        : -1[0m
+[32m[2023-11-10 10:32:38,229] [    INFO][0m - tensor_parallel_rank          : 0[0m
+[32m[2023-11-10 10:32:38,229] [    INFO][0m - train_batch_size              : 6[0m
+[32m[2023-11-10 10:32:38,229] [    INFO][0m - use_hybrid_parallel           : False[0m
+[32m[2023-11-10 10:32:38,229] [    INFO][0m - warmup_ratio                  : 0.05[0m
+[32m[2023-11-10 10:32:38,229] [    INFO][0m - warmup_steps                  : 0[0m
+[32m[2023-11-10 10:32:38,229] [    INFO][0m - weight_decay                  : 0.0[0m
+[32m[2023-11-10 10:32:38,229] [    INFO][0m - weight_name_suffix            : None[0m
+[32m[2023-11-10 10:32:38,229] [    INFO][0m - world_size                    : 4[0m
+[32m[2023-11-10 10:32:38,229] [    INFO][0m - [0m
+[32m[2023-11-10 10:32:38,229] [    INFO][0m - The following columns in the training set  don't have a corresponding argument in `ErnieLayoutForQuestionAnswering.forward` and have been ignored: end_labels, tokens, id, question_id, token_is_max_context, start_labels, token_to_orig_map, questions. If end_labels, tokens, id, question_id, token_is_max_context, start_labels, token_to_orig_map, questions are not expected by `ErnieLayoutForQuestionAnswering.forward`,  you can safely ignore this message.[0m
+[32m[2023-11-10 10:32:44,429] [    INFO][0m - ***** Running training *****[0m
+[32m[2023-11-10 10:32:44,429] [    INFO][0m -   Num examples = 13,978[0m
+[32m[2023-11-10 10:32:44,429] [    INFO][0m -   Num Epochs = 4[0m
+[32m[2023-11-10 10:32:44,429] [    INFO][0m -   Instantaneous batch size per device = 6[0m
+[32m[2023-11-10 10:32:44,429] [    INFO][0m -   Total train batch size (w. parallel, distributed & accumulation) = 24[0m
+[32m[2023-11-10 10:32:44,430] [    INFO][0m -   Gradient Accumulation steps = 1[0m
+[32m[2023-11-10 10:32:44,430] [    INFO][0m -   Total optimization steps = 2,332[0m
+[32m[2023-11-10 10:32:44,430] [    INFO][0m -   Total num train samples = 55,912[0m
+[32m[2023-11-10 10:32:44,432] [    INFO][0m -   Number of trainable parameters = 281,693,122 (per device)[0m
+[32m[2023-11-10 10:35:11,084] [    INFO][0m - The following columns in the evaluation set  don't have a corresponding argument in `ErnieLayoutForQuestionAnswering.forward` and have been ignored: end_labels, tokens, id, question_id, token_is_max_context, start_labels, token_to_orig_map, questions. If end_labels, tokens, id, question_id, token_is_max_context, start_labels, token_to_orig_map, questions are not expected by `ErnieLayoutForQuestionAnswering.forward`,  you can safely ignore this message.[0m
+[32m[2023-11-10 10:35:11,535] [    INFO][0m - ***** Running Evaluation *****[0m
+[32m[2023-11-10 10:35:11,535] [    INFO][0m -   Num examples = 852[0m
+[32m[2023-11-10 10:35:11,536] [    INFO][0m -   Total prediction steps = 36[0m
+[32m[2023-11-10 10:35:11,536] [    INFO][0m -   Pre device batch size = 6[0m
+[32m[2023-11-10 10:35:11,536] [    INFO][0m -   Total Batch size = 24[0m
+[32m[2023-11-10 10:38:09,544] [    INFO][0m - The following columns in the evaluation set  don't have a corresponding argument in `ErnieLayoutForQuestionAnswering.forward` and have been ignored: end_labels, tokens, id, question_id, token_is_max_context, start_labels, token_to_orig_map, questions. If end_labels, tokens, id, question_id, token_is_max_context, start_labels, token_to_orig_map, questions are not expected by `ErnieLayoutForQuestionAnswering.forward`,  you can safely ignore this message.[0m
+[32m[2023-11-10 10:38:09,997] [    INFO][0m - ***** Running Evaluation *****[0m
+[32m[2023-11-10 10:38:09,997] [    INFO][0m -   Num examples = 852[0m
+[32m[2023-11-10 10:38:09,997] [    INFO][0m -   Total prediction steps = 36[0m
+[32m[2023-11-10 10:38:09,997] [    INFO][0m -   Pre device batch size = 6[0m
+[32m[2023-11-10 10:38:09,998] [    INFO][0m -   Total Batch size = 24[0m
+[32m[2023-11-10 10:41:05,164] [    INFO][0m - The following columns in the evaluation set  don't have a corresponding argument in `ErnieLayoutForQuestionAnswering.forward` and have been ignored: end_labels, tokens, id, question_id, token_is_max_context, start_labels, token_to_orig_map, questions. If end_labels, tokens, id, question_id, token_is_max_context, start_labels, token_to_orig_map, questions are not expected by `ErnieLayoutForQuestionAnswering.forward`,  you can safely ignore this message.[0m
+[32m[2023-11-10 10:41:05,611] [    INFO][0m - ***** Running Evaluation *****[0m
+[32m[2023-11-10 10:41:05,612] [    INFO][0m -   Num examples = 852[0m
+[32m[2023-11-10 10:41:05,612] [    INFO][0m -   Total prediction steps = 36[0m
+[32m[2023-11-10 10:41:05,612] [    INFO][0m -   Pre device batch size = 6[0m
+[32m[2023-11-10 10:41:05,612] [    INFO][0m -   Total Batch size = 24[0m
+[32m[2023-11-10 10:44:00,900] [    INFO][0m - The following columns in the evaluation set  don't have a corresponding argument in `ErnieLayoutForQuestionAnswering.forward` and have been ignored: end_labels, tokens, id, question_id, token_is_max_context, start_labels, token_to_orig_map, questions. If end_labels, tokens, id, question_id, token_is_max_context, start_labels, token_to_orig_map, questions are not expected by `ErnieLayoutForQuestionAnswering.forward`,  you can safely ignore this message.[0m
+[32m[2023-11-10 10:44:01,348] [    INFO][0m - ***** Running Evaluation *****[0m
+[32m[2023-11-10 10:44:01,348] [    INFO][0m -   Num examples = 852[0m
+[32m[2023-11-10 10:44:01,348] [    INFO][0m -   Total prediction steps = 36[0m
+[32m[2023-11-10 10:44:01,348] [    INFO][0m -   Pre device batch size = 6[0m
+[32m[2023-11-10 10:44:01,349] [    INFO][0m -   Total Batch size = 24[0m
+[32m[2023-11-10 10:46:56,818] [    INFO][0m - The following columns in the evaluation set  don't have a corresponding argument in `ErnieLayoutForQuestionAnswering.forward` and have been ignored: end_labels, tokens, id, question_id, token_is_max_context, start_labels, token_to_orig_map, questions. If end_labels, tokens, id, question_id, token_is_max_context, start_labels, token_to_orig_map, questions are not expected by `ErnieLayoutForQuestionAnswering.forward`,  you can safely ignore this message.[0m
+[32m[2023-11-10 10:46:57,266] [    INFO][0m - ***** Running Evaluation *****[0m
+[32m[2023-11-10 10:46:57,267] [    INFO][0m -   Num examples = 852[0m
+[32m[2023-11-10 10:46:57,267] [    INFO][0m -   Total prediction steps = 36[0m
+[32m[2023-11-10 10:46:57,267] [    INFO][0m -   Pre device batch size = 6[0m
+[32m[2023-11-10 10:46:57,267] [    INFO][0m -   Total Batch size = 24[0m
+[32m[2023-11-10 10:49:52,557] [    INFO][0m - The following columns in the evaluation set  don't have a corresponding argument in `ErnieLayoutForQuestionAnswering.forward` and have been ignored: end_labels, tokens, id, question_id, token_is_max_context, start_labels, token_to_orig_map, questions. If end_labels, tokens, id, question_id, token_is_max_context, start_labels, token_to_orig_map, questions are not expected by `ErnieLayoutForQuestionAnswering.forward`,  you can safely ignore this message.[0m
+[32m[2023-11-10 10:49:53,004] [    INFO][0m - ***** Running Evaluation *****[0m
+[32m[2023-11-10 10:49:53,004] [    INFO][0m -   Num examples = 852[0m
+[32m[2023-11-10 10:49:53,005] [    INFO][0m -   Total prediction steps = 36[0m
+[32m[2023-11-10 10:49:53,005] [    INFO][0m -   Pre device batch size = 6[0m
+[32m[2023-11-10 10:49:53,005] [    INFO][0m -   Total Batch size = 24[0m
+[32m[2023-11-10 10:52:54,587] [    INFO][0m - The following columns in the evaluation set  don't have a corresponding argument in `ErnieLayoutForQuestionAnswering.forward` and have been ignored: end_labels, tokens, id, question_id, token_is_max_context, start_labels, token_to_orig_map, questions. If end_labels, tokens, id, question_id, token_is_max_context, start_labels, token_to_orig_map, questions are not expected by `ErnieLayoutForQuestionAnswering.forward`,  you can safely ignore this message.[0m
+[32m[2023-11-10 10:52:55,040] [    INFO][0m - ***** Running Evaluation *****[0m
+[32m[2023-11-10 10:52:55,040] [    INFO][0m -   Num examples = 852[0m
+[32m[2023-11-10 10:52:55,040] [    INFO][0m -   Total prediction steps = 36[0m
+[32m[2023-11-10 10:52:55,040] [    INFO][0m -   Pre device batch size = 6[0m
+[32m[2023-11-10 10:52:55,041] [    INFO][0m -   Total Batch size = 24[0m
+[32m[2023-11-10 10:55:50,907] [    INFO][0m - The following columns in the evaluation set  don't have a corresponding argument in `ErnieLayoutForQuestionAnswering.forward` and have been ignored: end_labels, tokens, id, question_id, token_is_max_context, start_labels, token_to_orig_map, questions. If end_labels, tokens, id, question_id, token_is_max_context, start_labels, token_to_orig_map, questions are not expected by `ErnieLayoutForQuestionAnswering.forward`,  you can safely ignore this message.[0m
+[32m[2023-11-10 10:55:51,356] [    INFO][0m - ***** Running Evaluation *****[0m
+[32m[2023-11-10 10:55:51,356] [    INFO][0m -   Num examples = 852[0m
+[32m[2023-11-10 10:55:51,356] [    INFO][0m -   Total prediction steps = 36[0m
+[32m[2023-11-10 10:55:51,356] [    INFO][0m -   Pre device batch size = 6[0m
+[32m[2023-11-10 10:55:51,356] [    INFO][0m -   Total Batch size = 24[0m
+[32m[2023-11-10 10:58:47,030] [    INFO][0m - The following columns in the evaluation set  don't have a corresponding argument in `ErnieLayoutForQuestionAnswering.forward` and have been ignored: end_labels, tokens, id, question_id, token_is_max_context, start_labels, token_to_orig_map, questions. If end_labels, tokens, id, question_id, token_is_max_context, start_labels, token_to_orig_map, questions are not expected by `ErnieLayoutForQuestionAnswering.forward`,  you can safely ignore this message.[0m
+[32m[2023-11-10 10:58:47,481] [    INFO][0m - ***** Running Evaluation *****[0m
+[32m[2023-11-10 10:58:47,481] [    INFO][0m -   Num examples = 852[0m
+[32m[2023-11-10 10:58:47,481] [    INFO][0m -   Total prediction steps = 36[0m
+[32m[2023-11-10 10:58:47,481] [    INFO][0m -   Pre device batch size = 6[0m
+[32m[2023-11-10 10:58:47,481] [    INFO][0m -   Total Batch size = 24[0m
+[32m[2023-11-10 11:01:43,029] [    INFO][0m - The following columns in the evaluation set  don't have a corresponding argument in `ErnieLayoutForQuestionAnswering.forward` and have been ignored: end_labels, tokens, id, question_id, token_is_max_context, start_labels, token_to_orig_map, questions. If end_labels, tokens, id, question_id, token_is_max_context, start_labels, token_to_orig_map, questions are not expected by `ErnieLayoutForQuestionAnswering.forward`,  you can safely ignore this message.[0m
+[32m[2023-11-10 11:01:43,523] [    INFO][0m - ***** Running Evaluation *****[0m
+[32m[2023-11-10 11:01:43,524] [    INFO][0m -   Num examples = 852[0m
+[32m[2023-11-10 11:01:43,524] [    INFO][0m -   Total prediction steps = 36[0m
+[32m[2023-11-10 11:01:43,524] [    INFO][0m -   Pre device batch size = 6[0m
+[32m[2023-11-10 11:01:43,524] [    INFO][0m -   Total Batch size = 24[0m
+[32m[2023-11-10 11:04:38,788] [    INFO][0m - The following columns in the evaluation set  don't have a corresponding argument in `ErnieLayoutForQuestionAnswering.forward` and have been ignored: end_labels, tokens, id, question_id, token_is_max_context, start_labels, token_to_orig_map, questions. If end_labels, tokens, id, question_id, token_is_max_context, start_labels, token_to_orig_map, questions are not expected by `ErnieLayoutForQuestionAnswering.forward`,  you can safely ignore this message.[0m
+[32m[2023-11-10 11:04:39,243] [    INFO][0m - ***** Running Evaluation *****[0m
+[32m[2023-11-10 11:04:39,243] [    INFO][0m -   Num examples = 852[0m
+[32m[2023-11-10 11:04:39,243] [    INFO][0m -   Total prediction steps = 36[0m
+[32m[2023-11-10 11:04:39,243] [    INFO][0m -   Pre device batch size = 6[0m
+[32m[2023-11-10 11:04:39,243] [    INFO][0m -   Total Batch size = 24[0m
+[33m[2023-11-10 11:06:33,781] [ WARNING][0m - Detected that datasets module was imported before paddlenlp. This may cause PaddleNLP datasets to be unavalible in intranet. Please import paddlenlp before datasets module to avoid download issues[0m
+[33m[2023-11-10 11:06:34,844] [ WARNING][0m - evaluation_strategy reset to IntervalStrategy.STEPS for do_eval is True. you can also set evaluation_strategy='epoch'.[0m
+======================= Modified FLAGS detected =======================
+FLAGS(name='FLAGS_selected_gpus', current_value='1', default_value='')
+=======================================================================
+I1110 11:06:34.845438 185711 tcp_utils.cc:107] Retry to connect to 172.31.1.102:43154 while the server is not yet listening.
+I1110 11:06:37.845722 185711 tcp_utils.cc:130] Successfully connected to 172.31.1.102:43154
+W1110 11:06:39.281646 185711 gpu_resources.cc:119] Please NOTE: device: 1, GPU Compute Capability: 7.5, Driver API Version: 12.3, Runtime API Version: 11.7
+W1110 11:06:39.287297 185711 gpu_resources.cc:149] device: 1, cuDNN Version: 8.5.
+[32m[2023-11-10 11:06:39,892] [    INFO][0m - The default value for the training argument `--report_to` will change in v5 (from all installed integrations to none). In v5, you will need to use `--report_to all` to get the same behavior as now. You should start updating your code and make this info disappear :-).[0m
+[32m[2023-11-10 11:06:39,893] [    INFO][0m - ============================================================[0m
+[32m[2023-11-10 11:06:39,893] [    INFO][0m -      Model Configuration Arguments      [0m
+[32m[2023-11-10 11:06:39,893] [    INFO][0m - paddle commit id              : 3a1b1659a405a044ce806fbe027cc146f1193e6d[0m
+[32m[2023-11-10 11:06:39,894] [    INFO][0m - cache_dir                     : None[0m
+[32m[2023-11-10 11:06:39,894] [    INFO][0m - config_name                   : None[0m
+[32m[2023-11-10 11:06:39,894] [    INFO][0m - model_name_or_path            : doc15k[0m
+[32m[2023-11-10 11:06:39,894] [    INFO][0m - tokenizer_name                : None[0m
+[32m[2023-11-10 11:06:39,894] [    INFO][0m - [0m
+[32m[2023-11-10 11:06:39,894] [    INFO][0m - ============================================================[0m
+[32m[2023-11-10 11:06:39,894] [    INFO][0m -       Data Configuration Arguments      [0m
+[32m[2023-11-10 11:06:39,894] [    INFO][0m - paddle commit id              : 3a1b1659a405a044ce806fbe027cc146f1193e6d[0m
+[32m[2023-11-10 11:06:39,894] [    INFO][0m - dataset_config_name           : None[0m
+[32m[2023-11-10 11:06:39,894] [    INFO][0m - dataset_name                  : fidelity[0m
+[32m[2023-11-10 11:06:39,894] [    INFO][0m - doc_stride                    : 128[0m
+[32m[2023-11-10 11:06:39,894] [    INFO][0m - label_all_tokens              : False[0m
+[32m[2023-11-10 11:06:39,894] [    INFO][0m - lang                          : en[0m
+[32m[2023-11-10 11:06:39,894] [    INFO][0m - max_seq_length                : 512[0m
+[32m[2023-11-10 11:06:39,895] [    INFO][0m - max_test_samples              : None[0m
+[32m[2023-11-10 11:06:39,895] [    INFO][0m - max_train_samples             : None[0m
+[32m[2023-11-10 11:06:39,895] [    INFO][0m - max_val_samples               : None[0m
+[32m[2023-11-10 11:06:39,895] [    INFO][0m - overwrite_cache               : False[0m
+[32m[2023-11-10 11:06:39,895] [    INFO][0m - pad_to_max_length             : True[0m
+[32m[2023-11-10 11:06:39,895] [    INFO][0m - pattern                       : mrc[0m
+[32m[2023-11-10 11:06:39,895] [    INFO][0m - preprocessing_num_workers     : 32[0m
+[32m[2023-11-10 11:06:39,895] [    INFO][0m - return_entity_level_metrics   : False[0m
+[32m[2023-11-10 11:06:39,895] [    INFO][0m - rst_converter                 : None[0m
+[32m[2023-11-10 11:06:39,895] [    INFO][0m - target_size                   : 1000[0m
+[32m[2023-11-10 11:06:39,895] [    INFO][0m - task_name                     : ner[0m
+[32m[2023-11-10 11:06:39,895] [    INFO][0m - task_type                     : ner[0m
+[32m[2023-11-10 11:06:39,895] [    INFO][0m - train_log_file                : None[0m
+[32m[2023-11-10 11:06:39,895] [    INFO][0m - train_nshard                  : 16[0m
+[32m[2023-11-10 11:06:39,895] [    INFO][0m - use_segment_box               : False[0m
+[32m[2023-11-10 11:06:39,896] [    INFO][0m - [0m
+[32m[2023-11-10 11:06:40,035] [    INFO][0m - We are using <class 'paddlenlp.transformers.ernie_layout.tokenizer.ErnieLayoutTokenizer'> to load 'doc15k'.[0m
+[32m[2023-11-10 11:06:40,603] [    INFO][0m - We are using <class 'paddlenlp.transformers.ernie_layout.modeling.ErnieLayoutForQuestionAnswering'> to load 'doc15k'.[0m
+[32m[2023-11-10 11:06:40,604] [    INFO][0m - Loading configuration file doc15k/config.json[0m
+[32m[2023-11-10 11:06:40,604] [    INFO][0m - Loading weights file doc15k/model_state.pdparams[0m
+[32m[2023-11-10 11:06:41,895] [    INFO][0m - Loaded weights file from disk, setting weights to model.[0m
+[32m[2023-11-10 11:06:43,324] [    INFO][0m - All model checkpoint weights were used when initializing ErnieLayoutForQuestionAnswering.
+[0m
+[32m[2023-11-10 11:06:43,325] [    INFO][0m - All the weights of ErnieLayoutForQuestionAnswering were initialized from the model checkpoint at doc15k.
+If your task is similar to the task the model of the checkpoint was trained on, you can already use ErnieLayoutForQuestionAnswering for predictions without further training.[0m
+[32m[2023-11-10 11:06:43,358] [    INFO][0m - spliting train dataset into 16 shard[0m
+[32m[2023-11-10 11:07:19,977] [    INFO][0m - ============================================================[0m
+[32m[2023-11-10 11:07:19,978] [    INFO][0m -     Training Configuration Arguments    [0m
+[32m[2023-11-10 11:07:19,978] [    INFO][0m - paddle commit id              : 3a1b1659a405a044ce806fbe027cc146f1193e6d[0m
+[32m[2023-11-10 11:07:19,978] [    INFO][0m - _no_sync_in_gradient_accumulation: True[0m
+[32m[2023-11-10 11:07:19,978] [    INFO][0m - adam_beta1                    : 0.9[0m
+[32m[2023-11-10 11:07:19,978] [    INFO][0m - adam_beta2                    : 0.999[0m
+[32m[2023-11-10 11:07:19,978] [    INFO][0m - adam_epsilon                  : 1e-08[0m
+[32m[2023-11-10 11:07:19,978] [    INFO][0m - amp_custom_black_list         : None[0m
+[32m[2023-11-10 11:07:19,978] [    INFO][0m - amp_custom_white_list         : None[0m
+[32m[2023-11-10 11:07:19,978] [    INFO][0m - amp_master_grad               : False[0m
+[32m[2023-11-10 11:07:19,978] [    INFO][0m - bf16                          : False[0m
+[32m[2023-11-10 11:07:19,978] [    INFO][0m - bf16_full_eval                : False[0m
+[32m[2023-11-10 11:07:19,979] [    INFO][0m - current_device                : gpu:1[0m
+[32m[2023-11-10 11:07:19,979] [    INFO][0m - data_parallel_rank            : 1[0m
+[32m[2023-11-10 11:07:19,979] [    INFO][0m - dataloader_drop_last          : False[0m
+[32m[2023-11-10 11:07:19,979] [    INFO][0m - dataloader_num_workers        : 0[0m
+[32m[2023-11-10 11:07:19,979] [    INFO][0m - dataset_rank                  : 1[0m
+[32m[2023-11-10 11:07:19,979] [    INFO][0m - dataset_world_size            : 4[0m
+[32m[2023-11-10 11:07:19,979] [    INFO][0m - device                        : gpu[0m
+[32m[2023-11-10 11:07:19,979] [    INFO][0m - disable_tqdm                  : False[0m
+[32m[2023-11-10 11:07:19,979] [    INFO][0m - do_eval                       : True[0m
+[32m[2023-11-10 11:07:19,979] [    INFO][0m - do_export                     : False[0m
+[32m[2023-11-10 11:07:19,979] [    INFO][0m - do_predict                    : False[0m
+[32m[2023-11-10 11:07:19,979] [    INFO][0m - do_train                      : True[0m
+[32m[2023-11-10 11:07:19,979] [    INFO][0m - eval_accumulation_steps       : None[0m
+[32m[2023-11-10 11:07:19,979] [    INFO][0m - eval_batch_size               : 6[0m
+[32m[2023-11-10 11:07:19,979] [    INFO][0m - eval_steps                    : 100[0m
+[32m[2023-11-10 11:07:19,980] [    INFO][0m - evaluation_strategy           : IntervalStrategy.STEPS[0m
+[32m[2023-11-10 11:07:19,980] [    INFO][0m - flatten_param_grads           : False[0m
+[32m[2023-11-10 11:07:19,980] [    INFO][0m - fp16                          : False[0m
+[32m[2023-11-10 11:07:19,980] [    INFO][0m - fp16_full_eval                : False[0m
+[32m[2023-11-10 11:07:19,980] [    INFO][0m - fp16_opt_level                : O1[0m
+[32m[2023-11-10 11:07:19,980] [    INFO][0m - gradient_accumulation_steps   : 1[0m
+[32m[2023-11-10 11:07:19,980] [    INFO][0m - greater_is_better             : True[0m
+[32m[2023-11-10 11:07:19,980] [    INFO][0m - hybrid_parallel_topo_order    : None[0m
+[32m[2023-11-10 11:07:19,980] [    INFO][0m - ignore_data_skip              : False[0m
+[32m[2023-11-10 11:07:19,980] [    INFO][0m - label_names                   : ['start_positions', 'end_positions'][0m
+[32m[2023-11-10 11:07:19,980] [    INFO][0m - lazy_data_processing          : True[0m
+[32m[2023-11-10 11:07:19,980] [    INFO][0m - learning_rate                 : 2e-05[0m
+[32m[2023-11-10 11:07:19,980] [    INFO][0m - load_best_model_at_end        : True[0m
+[32m[2023-11-10 11:07:19,980] [    INFO][0m - load_sharded_model            : False[0m
+[32m[2023-11-10 11:07:19,981] [    INFO][0m - local_process_index           : 1[0m
+[32m[2023-11-10 11:07:19,981] [    INFO][0m - local_rank                    : 1[0m
+[32m[2023-11-10 11:07:19,981] [    INFO][0m - log_level                     : -1[0m
+[32m[2023-11-10 11:07:19,981] [    INFO][0m - log_level_replica             : -1[0m
+[32m[2023-11-10 11:07:19,981] [    INFO][0m - log_on_each_node              : True[0m
+[32m[2023-11-10 11:07:19,981] [    INFO][0m - logging_dir                   : ./models/fidelity_save_100/runs/Nov10_11-06-34_ip-172-31-1-102[0m
+[32m[2023-11-10 11:07:19,981] [    INFO][0m - logging_first_step            : False[0m
+[32m[2023-11-10 11:07:19,981] [    INFO][0m - logging_steps                 : 500[0m
+[32m[2023-11-10 11:07:19,981] [    INFO][0m - logging_strategy              : IntervalStrategy.STEPS[0m
+[32m[2023-11-10 11:07:19,981] [    INFO][0m - lr_end                        : 1e-07[0m
+[32m[2023-11-10 11:07:19,981] [    INFO][0m - lr_scheduler_type             : SchedulerType.LINEAR[0m
+[32m[2023-11-10 11:07:19,981] [    INFO][0m - max_evaluate_steps            : -1[0m
+[32m[2023-11-10 11:07:19,981] [    INFO][0m - max_grad_norm                 : 1.0[0m
+[32m[2023-11-10 11:07:19,981] [    INFO][0m - max_steps                     : -1[0m
+[32m[2023-11-10 11:07:19,981] [    INFO][0m - metric_for_best_model         : eval_f1[0m
+[32m[2023-11-10 11:07:19,982] [    INFO][0m - minimum_eval_times            : None[0m
+[32m[2023-11-10 11:07:19,982] [    INFO][0m - no_cuda                       : False[0m
+[32m[2023-11-10 11:07:19,982] [    INFO][0m - num_cycles                    : 0.5[0m
+[32m[2023-11-10 11:07:19,982] [    INFO][0m - num_train_epochs              : 4.0[0m
+[32m[2023-11-10 11:07:19,982] [    INFO][0m - optim                         : OptimizerNames.ADAMW[0m
+[32m[2023-11-10 11:07:19,982] [    INFO][0m - optimizer_name_suffix         : None[0m
+[32m[2023-11-10 11:07:19,982] [    INFO][0m - output_dir                    : ./models/fidelity_save_100/[0m
+[32m[2023-11-10 11:07:19,982] [    INFO][0m - overwrite_output_dir          : True[0m
+[32m[2023-11-10 11:07:19,982] [    INFO][0m - past_index                    : -1[0m
+[32m[2023-11-10 11:07:19,982] [    INFO][0m - per_device_eval_batch_size    : 6[0m
+[32m[2023-11-10 11:07:19,982] [    INFO][0m - per_device_train_batch_size   : 6[0m
+[32m[2023-11-10 11:07:19,982] [    INFO][0m - pipeline_parallel_config      : [0m
+[32m[2023-11-10 11:07:19,982] [    INFO][0m - pipeline_parallel_degree      : -1[0m
+[32m[2023-11-10 11:07:19,982] [    INFO][0m - pipeline_parallel_rank        : 0[0m
+[32m[2023-11-10 11:07:19,982] [    INFO][0m - power                         : 1.0[0m
+[32m[2023-11-10 11:07:19,982] [    INFO][0m - prediction_loss_only          : False[0m
+[32m[2023-11-10 11:07:19,983] [    INFO][0m - process_index                 : 1[0m
+[32m[2023-11-10 11:07:19,983] [    INFO][0m - recompute                     : False[0m
+[32m[2023-11-10 11:07:19,983] [    INFO][0m - remove_unused_columns         : True[0m
+[32m[2023-11-10 11:07:19,983] [    INFO][0m - report_to                     : ['visualdl'][0m
+[32m[2023-11-10 11:07:19,983] [    INFO][0m - resume_from_checkpoint        : None[0m
+[32m[2023-11-10 11:07:19,983] [    INFO][0m - run_name                      : ./models/fidelity_save_100/[0m
+[32m[2023-11-10 11:07:19,983] [    INFO][0m - save_on_each_node             : False[0m
+[32m[2023-11-10 11:07:19,983] [    INFO][0m - save_sharded_model            : False[0m
+[32m[2023-11-10 11:07:19,983] [    INFO][0m - save_steps                    : 100[0m
+[32m[2023-11-10 11:07:19,983] [    INFO][0m - save_strategy                 : IntervalStrategy.STEPS[0m
+[32m[2023-11-10 11:07:19,983] [    INFO][0m - save_total_limit              : 1[0m
+[32m[2023-11-10 11:07:19,983] [    INFO][0m - scale_loss                    : 32768[0m
+[32m[2023-11-10 11:07:19,983] [    INFO][0m - seed                          : 1000[0m
+[32m[2023-11-10 11:07:19,983] [    INFO][0m - sharding                      : [][0m
+[32m[2023-11-10 11:07:19,983] [    INFO][0m - sharding_degree               : -1[0m
+[32m[2023-11-10 11:07:19,983] [    INFO][0m - sharding_parallel_config      : [0m
+[32m[2023-11-10 11:07:19,984] [    INFO][0m - sharding_parallel_degree      : -1[0m
+[32m[2023-11-10 11:07:19,984] [    INFO][0m - sharding_parallel_rank        : 0[0m
+[32m[2023-11-10 11:07:19,984] [    INFO][0m - should_load_sharding_stage1_model: False[0m
+[32m[2023-11-10 11:07:19,984] [    INFO][0m - should_log                    : False[0m
+[32m[2023-11-10 11:07:19,984] [    INFO][0m - should_save                   : False[0m
+[32m[2023-11-10 11:07:19,984] [    INFO][0m - should_save_model_state       : False[0m
+[32m[2023-11-10 11:07:19,984] [    INFO][0m - should_save_sharding_stage1_model: False[0m
+[32m[2023-11-10 11:07:19,984] [    INFO][0m - skip_memory_metrics           : True[0m
+[32m[2023-11-10 11:07:19,984] [    INFO][0m - skip_profile_timer            : True[0m
+[32m[2023-11-10 11:07:19,984] [    INFO][0m - tensor_parallel_degree        : -1[0m
+[32m[2023-11-10 11:07:19,984] [    INFO][0m - tensor_parallel_rank          : 0[0m
+[32m[2023-11-10 11:07:19,984] [    INFO][0m - train_batch_size              : 6[0m
+[32m[2023-11-10 11:07:19,984] [    INFO][0m - use_hybrid_parallel           : False[0m
+[32m[2023-11-10 11:07:19,984] [    INFO][0m - warmup_ratio                  : 0.05[0m
+[32m[2023-11-10 11:07:19,985] [    INFO][0m - warmup_steps                  : 0[0m
+[32m[2023-11-10 11:07:19,985] [    INFO][0m - weight_decay                  : 0.0[0m
+[32m[2023-11-10 11:07:19,985] [    INFO][0m - weight_name_suffix            : None[0m
+[32m[2023-11-10 11:07:19,985] [    INFO][0m - world_size                    : 4[0m
+[32m[2023-11-10 11:07:19,985] [    INFO][0m - [0m
+[32m[2023-11-10 11:07:19,985] [    INFO][0m - The following columns in the training set  don't have a corresponding argument in `ErnieLayoutForQuestionAnswering.forward` and have been ignored: question_id, start_labels, end_labels, questions, tokens, token_is_max_context, token_to_orig_map, id. If question_id, start_labels, end_labels, questions, tokens, token_is_max_context, token_to_orig_map, id are not expected by `ErnieLayoutForQuestionAnswering.forward`,  you can safely ignore this message.[0m
+[32m[2023-11-10 11:07:26,152] [    INFO][0m - ***** Running training *****[0m
+[32m[2023-11-10 11:07:26,152] [    INFO][0m -   Num examples = 13,978[0m
+[32m[2023-11-10 11:07:26,153] [    INFO][0m -   Num Epochs = 4[0m
+[32m[2023-11-10 11:07:26,153] [    INFO][0m -   Instantaneous batch size per device = 6[0m
+[32m[2023-11-10 11:07:26,153] [    INFO][0m -   Total train batch size (w. parallel, distributed & accumulation) = 24[0m
+[32m[2023-11-10 11:07:26,153] [    INFO][0m -   Gradient Accumulation steps = 1[0m
+[32m[2023-11-10 11:07:26,153] [    INFO][0m -   Total optimization steps = 2,332[0m
+[32m[2023-11-10 11:07:26,153] [    INFO][0m -   Total num train samples = 55,912[0m
+[32m[2023-11-10 11:07:26,155] [    INFO][0m -   Number of trainable parameters = 281,693,122 (per device)[0m
+[32m[2023-11-10 11:09:52,405] [    INFO][0m - The following columns in the evaluation set  don't have a corresponding argument in `ErnieLayoutForQuestionAnswering.forward` and have been ignored: question_id, start_labels, end_labels, questions, tokens, token_is_max_context, token_to_orig_map, id. If question_id, start_labels, end_labels, questions, tokens, token_is_max_context, token_to_orig_map, id are not expected by `ErnieLayoutForQuestionAnswering.forward`,  you can safely ignore this message.[0m
+[32m[2023-11-10 11:09:52,855] [    INFO][0m - ***** Running Evaluation *****[0m
+[32m[2023-11-10 11:09:52,855] [    INFO][0m -   Num examples = 852[0m
+[32m[2023-11-10 11:09:52,855] [    INFO][0m -   Total prediction steps = 36[0m
+[32m[2023-11-10 11:09:52,855] [    INFO][0m -   Pre device batch size = 6[0m
+[32m[2023-11-10 11:09:52,855] [    INFO][0m -   Total Batch size = 24[0m
+Traceback (most recent call last):
+  File "run_mrc.py", line 243, in <module>
+    main()
+  File "run_mrc.py", line 211, in main
+    train_result = trainer.train(resume_from_checkpoint=checkpoint)
+  File "/home/ubuntu/Demo-with-user-question/paddlenlp/trainer/trainer.py", line 883, in train
+    self._maybe_log_save_evaluate(tr_loss, model, epoch, ignore_keys_for_eval, inputs=inputs)
+  File "/home/ubuntu/Demo-with-user-question/paddlenlp/trainer/trainer.py", line 1060, in _maybe_log_save_evaluate
+    self._save_checkpoint(model, metrics=metrics)
+  File "/home/ubuntu/Demo-with-user-question/paddlenlp/trainer/trainer.py", line 1800, in _save_checkpoint
+    metric_value = metrics[metric_to_check]
+KeyError: 'eval_f1'
+[33m[2023-11-10 11:11:33,645] [ WARNING][0m - Detected that datasets module was imported before paddlenlp. This may cause PaddleNLP datasets to be unavalible in intranet. Please import paddlenlp before datasets module to avoid download issues[0m
+[33m[2023-11-10 11:11:34,714] [ WARNING][0m - evaluation_strategy reset to IntervalStrategy.STEPS for do_eval is True. you can also set evaluation_strategy='epoch'.[0m
+======================= Modified FLAGS detected =======================
+FLAGS(name='FLAGS_selected_gpus', current_value='1', default_value='')
+=======================================================================
+I1110 11:11:34.715415 187363 tcp_utils.cc:130] Successfully connected to 172.31.1.102:63714
+W1110 11:11:38.973759 187363 gpu_resources.cc:119] Please NOTE: device: 1, GPU Compute Capability: 7.5, Driver API Version: 12.3, Runtime API Version: 11.7
+W1110 11:11:38.979907 187363 gpu_resources.cc:149] device: 1, cuDNN Version: 8.5.
+[32m[2023-11-10 11:11:39,619] [    INFO][0m - The default value for the training argument `--report_to` will change in v5 (from all installed integrations to none). In v5, you will need to use `--report_to all` to get the same behavior as now. You should start updating your code and make this info disappear :-).[0m
+[32m[2023-11-10 11:11:39,620] [    INFO][0m - ============================================================[0m
+[32m[2023-11-10 11:11:39,620] [    INFO][0m -      Model Configuration Arguments      [0m
+[32m[2023-11-10 11:11:39,620] [    INFO][0m - paddle commit id              : 3a1b1659a405a044ce806fbe027cc146f1193e6d[0m
+[32m[2023-11-10 11:11:39,620] [    INFO][0m - cache_dir                     : None[0m
+[32m[2023-11-10 11:11:39,620] [    INFO][0m - config_name                   : None[0m
+[32m[2023-11-10 11:11:39,620] [    INFO][0m - model_name_or_path            : doc15k[0m
+[32m[2023-11-10 11:11:39,621] [    INFO][0m - tokenizer_name                : None[0m
+[32m[2023-11-10 11:11:39,621] [    INFO][0m - [0m
+[32m[2023-11-10 11:11:39,621] [    INFO][0m - ============================================================[0m
+[32m[2023-11-10 11:11:39,621] [    INFO][0m -       Data Configuration Arguments      [0m
+[32m[2023-11-10 11:11:39,621] [    INFO][0m - paddle commit id              : 3a1b1659a405a044ce806fbe027cc146f1193e6d[0m
+[32m[2023-11-10 11:11:39,621] [    INFO][0m - dataset_config_name           : None[0m
+[32m[2023-11-10 11:11:39,621] [    INFO][0m - dataset_name                  : fidelity[0m
+[32m[2023-11-10 11:11:39,621] [    INFO][0m - doc_stride                    : 128[0m
+[32m[2023-11-10 11:11:39,621] [    INFO][0m - label_all_tokens              : False[0m
+[32m[2023-11-10 11:11:39,621] [    INFO][0m - lang                          : en[0m
+[32m[2023-11-10 11:11:39,621] [    INFO][0m - max_seq_length                : 512[0m
+[32m[2023-11-10 11:11:39,621] [    INFO][0m - max_test_samples              : None[0m
+[32m[2023-11-10 11:11:39,621] [    INFO][0m - max_train_samples             : None[0m
+[32m[2023-11-10 11:11:39,621] [    INFO][0m - max_val_samples               : None[0m
+[32m[2023-11-10 11:11:39,621] [    INFO][0m - overwrite_cache               : False[0m
+[32m[2023-11-10 11:11:39,622] [    INFO][0m - pad_to_max_length             : True[0m
+[32m[2023-11-10 11:11:39,622] [    INFO][0m - pattern                       : mrc[0m
+[32m[2023-11-10 11:11:39,622] [    INFO][0m - preprocessing_num_workers     : 32[0m
+[32m[2023-11-10 11:11:39,622] [    INFO][0m - return_entity_level_metrics   : True[0m
+[32m[2023-11-10 11:11:39,622] [    INFO][0m - rst_converter                 : None[0m
+[32m[2023-11-10 11:11:39,622] [    INFO][0m - target_size                   : 1000[0m
+[32m[2023-11-10 11:11:39,622] [    INFO][0m - task_name                     : ner[0m
+[32m[2023-11-10 11:11:39,622] [    INFO][0m - task_type                     : ner[0m
+[32m[2023-11-10 11:11:39,622] [    INFO][0m - train_log_file                : None[0m
+[32m[2023-11-10 11:11:39,622] [    INFO][0m - train_nshard                  : 16[0m
+[32m[2023-11-10 11:11:39,622] [    INFO][0m - use_segment_box               : False[0m
+[32m[2023-11-10 11:11:39,622] [    INFO][0m - [0m
+[32m[2023-11-10 11:11:39,762] [    INFO][0m - We are using <class 'paddlenlp.transformers.ernie_layout.tokenizer.ErnieLayoutTokenizer'> to load 'doc15k'.[0m
+[32m[2023-11-10 11:11:40,333] [    INFO][0m - We are using <class 'paddlenlp.transformers.ernie_layout.modeling.ErnieLayoutForQuestionAnswering'> to load 'doc15k'.[0m
+[32m[2023-11-10 11:11:40,334] [    INFO][0m - Loading configuration file doc15k/config.json[0m
+[32m[2023-11-10 11:11:40,335] [    INFO][0m - Loading weights file doc15k/model_state.pdparams[0m
+[32m[2023-11-10 11:11:41,639] [    INFO][0m - Loaded weights file from disk, setting weights to model.[0m
+[32m[2023-11-10 11:11:43,099] [    INFO][0m - All model checkpoint weights were used when initializing ErnieLayoutForQuestionAnswering.
+[0m
+[32m[2023-11-10 11:11:43,099] [    INFO][0m - All the weights of ErnieLayoutForQuestionAnswering were initialized from the model checkpoint at doc15k.
+If your task is similar to the task the model of the checkpoint was trained on, you can already use ErnieLayoutForQuestionAnswering for predictions without further training.[0m
+[32m[2023-11-10 11:11:43,132] [    INFO][0m - spliting train dataset into 16 shard[0m
+[32m[2023-11-10 11:12:20,011] [    INFO][0m - ============================================================[0m
+[32m[2023-11-10 11:12:20,011] [    INFO][0m -     Training Configuration Arguments    [0m
+[32m[2023-11-10 11:12:20,011] [    INFO][0m - paddle commit id              : 3a1b1659a405a044ce806fbe027cc146f1193e6d[0m
+[32m[2023-11-10 11:12:20,011] [    INFO][0m - _no_sync_in_gradient_accumulation: True[0m
+[32m[2023-11-10 11:12:20,012] [    INFO][0m - adam_beta1                    : 0.9[0m
+[32m[2023-11-10 11:12:20,012] [    INFO][0m - adam_beta2                    : 0.999[0m
+[32m[2023-11-10 11:12:20,012] [    INFO][0m - adam_epsilon                  : 1e-08[0m
+[32m[2023-11-10 11:12:20,012] [    INFO][0m - amp_custom_black_list         : None[0m
+[32m[2023-11-10 11:12:20,012] [    INFO][0m - amp_custom_white_list         : None[0m
+[32m[2023-11-10 11:12:20,012] [    INFO][0m - amp_master_grad               : False[0m
+[32m[2023-11-10 11:12:20,012] [    INFO][0m - bf16                          : False[0m
+[32m[2023-11-10 11:12:20,012] [    INFO][0m - bf16_full_eval                : False[0m
+[32m[2023-11-10 11:12:20,012] [    INFO][0m - current_device                : gpu:1[0m
+[32m[2023-11-10 11:12:20,012] [    INFO][0m - data_parallel_rank            : 1[0m
+[32m[2023-11-10 11:12:20,012] [    INFO][0m - dataloader_drop_last          : False[0m
+[32m[2023-11-10 11:12:20,012] [    INFO][0m - dataloader_num_workers        : 0[0m
+[32m[2023-11-10 11:12:20,012] [    INFO][0m - dataset_rank                  : 1[0m
+[32m[2023-11-10 11:12:20,012] [    INFO][0m - dataset_world_size            : 4[0m
+[32m[2023-11-10 11:12:20,013] [    INFO][0m - device                        : gpu[0m
+[32m[2023-11-10 11:12:20,013] [    INFO][0m - disable_tqdm                  : False[0m
+[32m[2023-11-10 11:12:20,013] [    INFO][0m - do_eval                       : True[0m
+[32m[2023-11-10 11:12:20,013] [    INFO][0m - do_export                     : False[0m
+[32m[2023-11-10 11:12:20,013] [    INFO][0m - do_predict                    : False[0m
+[32m[2023-11-10 11:12:20,013] [    INFO][0m - do_train                      : True[0m
+[32m[2023-11-10 11:12:20,013] [    INFO][0m - eval_accumulation_steps       : None[0m
+[32m[2023-11-10 11:12:20,013] [    INFO][0m - eval_batch_size               : 6[0m
+[32m[2023-11-10 11:12:20,013] [    INFO][0m - eval_steps                    : 100[0m
+[32m[2023-11-10 11:12:20,013] [    INFO][0m - evaluation_strategy           : IntervalStrategy.STEPS[0m
+[32m[2023-11-10 11:12:20,013] [    INFO][0m - flatten_param_grads           : False[0m
+[32m[2023-11-10 11:12:20,013] [    INFO][0m - fp16                          : False[0m
+[32m[2023-11-10 11:12:20,013] [    INFO][0m - fp16_full_eval                : False[0m
+[32m[2023-11-10 11:12:20,013] [    INFO][0m - fp16_opt_level                : O1[0m
+[32m[2023-11-10 11:12:20,013] [    INFO][0m - gradient_accumulation_steps   : 1[0m
+[32m[2023-11-10 11:12:20,013] [    INFO][0m - greater_is_better             : True[0m
+[32m[2023-11-10 11:12:20,014] [    INFO][0m - hybrid_parallel_topo_order    : None[0m
+[32m[2023-11-10 11:12:20,014] [    INFO][0m - ignore_data_skip              : False[0m
+[32m[2023-11-10 11:12:20,014] [    INFO][0m - label_names                   : ['start_positions', 'end_positions'][0m
+[32m[2023-11-10 11:12:20,014] [    INFO][0m - lazy_data_processing          : True[0m
+[32m[2023-11-10 11:12:20,014] [    INFO][0m - learning_rate                 : 2e-05[0m
+[32m[2023-11-10 11:12:20,014] [    INFO][0m - load_best_model_at_end        : True[0m
+[32m[2023-11-10 11:12:20,014] [    INFO][0m - load_sharded_model            : False[0m
+[32m[2023-11-10 11:12:20,014] [    INFO][0m - local_process_index           : 1[0m
+[32m[2023-11-10 11:12:20,014] [    INFO][0m - local_rank                    : 1[0m
+[32m[2023-11-10 11:12:20,014] [    INFO][0m - log_level                     : -1[0m
+[32m[2023-11-10 11:12:20,014] [    INFO][0m - log_level_replica             : -1[0m
+[32m[2023-11-10 11:12:20,014] [    INFO][0m - log_on_each_node              : True[0m
+[32m[2023-11-10 11:12:20,014] [    INFO][0m - logging_dir                   : ./models/fidelity_save_100/runs/Nov10_11-11-34_ip-172-31-1-102[0m
+[32m[2023-11-10 11:12:20,014] [    INFO][0m - logging_first_step            : False[0m
+[32m[2023-11-10 11:12:20,014] [    INFO][0m - logging_steps                 : 500[0m
+[32m[2023-11-10 11:12:20,015] [    INFO][0m - logging_strategy              : IntervalStrategy.STEPS[0m
+[32m[2023-11-10 11:12:20,015] [    INFO][0m - lr_end                        : 1e-07[0m
+[32m[2023-11-10 11:12:20,015] [    INFO][0m - lr_scheduler_type             : SchedulerType.LINEAR[0m
+[32m[2023-11-10 11:12:20,015] [    INFO][0m - max_evaluate_steps            : -1[0m
+[32m[2023-11-10 11:12:20,015] [    INFO][0m - max_grad_norm                 : 1.0[0m
+[32m[2023-11-10 11:12:20,015] [    INFO][0m - max_steps                     : -1[0m
+[32m[2023-11-10 11:12:20,015] [    INFO][0m - metric_for_best_model         : anls[0m
+[32m[2023-11-10 11:12:20,015] [    INFO][0m - minimum_eval_times            : None[0m
+[32m[2023-11-10 11:12:20,015] [    INFO][0m - no_cuda                       : False[0m
+[32m[2023-11-10 11:12:20,015] [    INFO][0m - num_cycles                    : 0.5[0m
+[32m[2023-11-10 11:12:20,015] [    INFO][0m - num_train_epochs              : 4.0[0m
+[32m[2023-11-10 11:12:20,015] [    INFO][0m - optim                         : OptimizerNames.ADAMW[0m
+[32m[2023-11-10 11:12:20,015] [    INFO][0m - optimizer_name_suffix         : None[0m
+[32m[2023-11-10 11:12:20,015] [    INFO][0m - output_dir                    : ./models/fidelity_save_100/[0m
+[32m[2023-11-10 11:12:20,015] [    INFO][0m - overwrite_output_dir          : True[0m
+[32m[2023-11-10 11:12:20,015] [    INFO][0m - past_index                    : -1[0m
+[32m[2023-11-10 11:12:20,016] [    INFO][0m - per_device_eval_batch_size    : 6[0m
+[32m[2023-11-10 11:12:20,016] [    INFO][0m - per_device_train_batch_size   : 6[0m
+[32m[2023-11-10 11:12:20,016] [    INFO][0m - pipeline_parallel_config      : [0m
+[32m[2023-11-10 11:12:20,016] [    INFO][0m - pipeline_parallel_degree      : -1[0m
+[32m[2023-11-10 11:12:20,016] [    INFO][0m - pipeline_parallel_rank        : 0[0m
+[32m[2023-11-10 11:12:20,016] [    INFO][0m - power                         : 1.0[0m
+[32m[2023-11-10 11:12:20,016] [    INFO][0m - prediction_loss_only          : False[0m
+[32m[2023-11-10 11:12:20,016] [    INFO][0m - process_index                 : 1[0m
+[32m[2023-11-10 11:12:20,016] [    INFO][0m - recompute                     : False[0m
+[32m[2023-11-10 11:12:20,016] [    INFO][0m - remove_unused_columns         : True[0m
+[32m[2023-11-10 11:12:20,016] [    INFO][0m - report_to                     : ['visualdl'][0m
+[32m[2023-11-10 11:12:20,016] [    INFO][0m - resume_from_checkpoint        : None[0m
+[32m[2023-11-10 11:12:20,016] [    INFO][0m - run_name                      : ./models/fidelity_save_100/[0m
+[32m[2023-11-10 11:12:20,016] [    INFO][0m - save_on_each_node             : False[0m
+[32m[2023-11-10 11:12:20,016] [    INFO][0m - save_sharded_model            : False[0m
+[32m[2023-11-10 11:12:20,017] [    INFO][0m - save_steps                    : 100[0m
+[32m[2023-11-10 11:12:20,017] [    INFO][0m - save_strategy                 : IntervalStrategy.STEPS[0m
+[32m[2023-11-10 11:12:20,017] [    INFO][0m - save_total_limit              : 1[0m
+[32m[2023-11-10 11:12:20,017] [    INFO][0m - scale_loss                    : 32768[0m
+[32m[2023-11-10 11:12:20,017] [    INFO][0m - seed                          : 1000[0m
+[32m[2023-11-10 11:12:20,017] [    INFO][0m - sharding                      : [][0m
+[32m[2023-11-10 11:12:20,017] [    INFO][0m - sharding_degree               : -1[0m
+[32m[2023-11-10 11:12:20,017] [    INFO][0m - sharding_parallel_config      : [0m
+[32m[2023-11-10 11:12:20,017] [    INFO][0m - sharding_parallel_degree      : -1[0m
+[32m[2023-11-10 11:12:20,017] [    INFO][0m - sharding_parallel_rank        : 0[0m
+[32m[2023-11-10 11:12:20,017] [    INFO][0m - should_load_sharding_stage1_model: False[0m
+[32m[2023-11-10 11:12:20,017] [    INFO][0m - should_log                    : False[0m
+[32m[2023-11-10 11:12:20,017] [    INFO][0m - should_save                   : False[0m
+[32m[2023-11-10 11:12:20,017] [    INFO][0m - should_save_model_state       : False[0m
+[32m[2023-11-10 11:12:20,017] [    INFO][0m - should_save_sharding_stage1_model: False[0m
+[32m[2023-11-10 11:12:20,018] [    INFO][0m - skip_memory_metrics           : True[0m
+[32m[2023-11-10 11:12:20,018] [    INFO][0m - skip_profile_timer            : True[0m
+[32m[2023-11-10 11:12:20,018] [    INFO][0m - tensor_parallel_degree        : -1[0m
+[32m[2023-11-10 11:12:20,018] [    INFO][0m - tensor_parallel_rank          : 0[0m
+[32m[2023-11-10 11:12:20,018] [    INFO][0m - train_batch_size              : 6[0m
+[32m[2023-11-10 11:12:20,018] [    INFO][0m - use_hybrid_parallel           : False[0m
+[32m[2023-11-10 11:12:20,018] [    INFO][0m - warmup_ratio                  : 0.05[0m
+[32m[2023-11-10 11:12:20,018] [    INFO][0m - warmup_steps                  : 0[0m
+[32m[2023-11-10 11:12:20,018] [    INFO][0m - weight_decay                  : 0.0[0m
+[32m[2023-11-10 11:12:20,018] [    INFO][0m - weight_name_suffix            : None[0m
+[32m[2023-11-10 11:12:20,018] [    INFO][0m - world_size                    : 4[0m
+[32m[2023-11-10 11:12:20,018] [    INFO][0m - [0m
+[32m[2023-11-10 11:12:20,019] [    INFO][0m - The following columns in the training set  don't have a corresponding argument in `ErnieLayoutForQuestionAnswering.forward` and have been ignored: token_to_orig_map, tokens, id, token_is_max_context, start_labels, end_labels, questions, question_id. If token_to_orig_map, tokens, id, token_is_max_context, start_labels, end_labels, questions, question_id are not expected by `ErnieLayoutForQuestionAnswering.forward`,  you can safely ignore this message.[0m
+[32m[2023-11-10 11:12:26,221] [    INFO][0m - ***** Running training *****[0m
+[32m[2023-11-10 11:12:26,221] [    INFO][0m -   Num examples = 13,978[0m
+[32m[2023-11-10 11:12:26,221] [    INFO][0m -   Num Epochs = 4[0m
+[32m[2023-11-10 11:12:26,221] [    INFO][0m -   Instantaneous batch size per device = 6[0m
+[32m[2023-11-10 11:12:26,221] [    INFO][0m -   Total train batch size (w. parallel, distributed & accumulation) = 24[0m
+[32m[2023-11-10 11:12:26,221] [    INFO][0m -   Gradient Accumulation steps = 1[0m
+[32m[2023-11-10 11:12:26,221] [    INFO][0m -   Total optimization steps = 2,332[0m
+[32m[2023-11-10 11:12:26,221] [    INFO][0m -   Total num train samples = 55,912[0m
+[32m[2023-11-10 11:12:26,224] [    INFO][0m -   Number of trainable parameters = 281,693,122 (per device)[0m
+[32m[2023-11-10 11:14:51,296] [    INFO][0m - The following columns in the evaluation set  don't have a corresponding argument in `ErnieLayoutForQuestionAnswering.forward` and have been ignored: token_to_orig_map, tokens, id, token_is_max_context, start_labels, end_labels, questions, question_id. If token_to_orig_map, tokens, id, token_is_max_context, start_labels, end_labels, questions, question_id are not expected by `ErnieLayoutForQuestionAnswering.forward`,  you can safely ignore this message.[0m
+[32m[2023-11-10 11:14:51,745] [    INFO][0m - ***** Running Evaluation *****[0m
+[32m[2023-11-10 11:14:51,745] [    INFO][0m -   Num examples = 852[0m
+[32m[2023-11-10 11:14:51,746] [    INFO][0m -   Total prediction steps = 36[0m
+[32m[2023-11-10 11:14:51,746] [    INFO][0m -   Pre device batch size = 6[0m
+[32m[2023-11-10 11:14:51,746] [    INFO][0m -   Total Batch size = 24[0m
+[32m[2023-11-10 11:17:53,352] [    INFO][0m - The following columns in the evaluation set  don't have a corresponding argument in `ErnieLayoutForQuestionAnswering.forward` and have been ignored: token_to_orig_map, tokens, id, token_is_max_context, start_labels, end_labels, questions, question_id. If token_to_orig_map, tokens, id, token_is_max_context, start_labels, end_labels, questions, question_id are not expected by `ErnieLayoutForQuestionAnswering.forward`,  you can safely ignore this message.[0m
+[32m[2023-11-10 11:17:53,800] [    INFO][0m - ***** Running Evaluation *****[0m
+[32m[2023-11-10 11:17:53,801] [    INFO][0m -   Num examples = 852[0m
+[32m[2023-11-10 11:17:53,801] [    INFO][0m -   Total prediction steps = 36[0m
+[32m[2023-11-10 11:17:53,801] [    INFO][0m -   Pre device batch size = 6[0m
+[32m[2023-11-10 11:17:53,801] [    INFO][0m -   Total Batch size = 24[0m
+[33m[2023-11-10 11:18:58,817] [ WARNING][0m - Detected that datasets module was imported before paddlenlp. This may cause PaddleNLP datasets to be unavalible in intranet. Please import paddlenlp before datasets module to avoid download issues[0m
+[33m[2023-11-10 11:18:59,878] [ WARNING][0m - evaluation_strategy reset to IntervalStrategy.STEPS for do_eval is True. you can also set evaluation_strategy='epoch'.[0m
+======================= Modified FLAGS detected =======================
+FLAGS(name='FLAGS_selected_gpus', current_value='1', default_value='')
+=======================================================================
+I1110 11:18:59.879016 190089 tcp_utils.cc:107] Retry to connect to 172.31.1.102:48747 while the server is not yet listening.
+I1110 11:19:02.879293 190089 tcp_utils.cc:130] Successfully connected to 172.31.1.102:48747
+W1110 11:19:04.317690 190089 gpu_resources.cc:119] Please NOTE: device: 1, GPU Compute Capability: 7.5, Driver API Version: 12.3, Runtime API Version: 11.7
+W1110 11:19:04.323879 190089 gpu_resources.cc:149] device: 1, cuDNN Version: 8.5.
+[32m[2023-11-10 11:19:04,916] [    INFO][0m - The default value for the training argument `--report_to` will change in v5 (from all installed integrations to none). In v5, you will need to use `--report_to all` to get the same behavior as now. You should start updating your code and make this info disappear :-).[0m
+[32m[2023-11-10 11:19:04,917] [    INFO][0m - ============================================================[0m
+[32m[2023-11-10 11:19:04,917] [    INFO][0m -      Model Configuration Arguments      [0m
+[32m[2023-11-10 11:19:04,917] [    INFO][0m - paddle commit id              : 3a1b1659a405a044ce806fbe027cc146f1193e6d[0m
+[32m[2023-11-10 11:19:04,917] [    INFO][0m - cache_dir                     : None[0m
+[32m[2023-11-10 11:19:04,918] [    INFO][0m - config_name                   : None[0m
+[32m[2023-11-10 11:19:04,918] [    INFO][0m - model_name_or_path            : ernie-layoutx-base-uncased[0m
+[32m[2023-11-10 11:19:04,918] [    INFO][0m - tokenizer_name                : None[0m
+[32m[2023-11-10 11:19:04,918] [    INFO][0m - [0m
+[32m[2023-11-10 11:19:04,918] [    INFO][0m - ============================================================[0m
+[32m[2023-11-10 11:19:04,918] [    INFO][0m -       Data Configuration Arguments      [0m
+[32m[2023-11-10 11:19:04,918] [    INFO][0m - paddle commit id              : 3a1b1659a405a044ce806fbe027cc146f1193e6d[0m
+[32m[2023-11-10 11:19:04,918] [    INFO][0m - dataset_config_name           : None[0m
+[32m[2023-11-10 11:19:04,918] [    INFO][0m - dataset_name                  : fidelity[0m
+[32m[2023-11-10 11:19:04,918] [    INFO][0m - doc_stride                    : 128[0m
+[32m[2023-11-10 11:19:04,918] [    INFO][0m - label_all_tokens              : False[0m
+[32m[2023-11-10 11:19:04,918] [    INFO][0m - lang                          : en[0m
+[32m[2023-11-10 11:19:04,918] [    INFO][0m - max_seq_length                : 512[0m
+[32m[2023-11-10 11:19:04,918] [    INFO][0m - max_test_samples              : None[0m
+[32m[2023-11-10 11:19:04,918] [    INFO][0m - max_train_samples             : None[0m
+[32m[2023-11-10 11:19:04,918] [    INFO][0m - max_val_samples               : None[0m
+[32m[2023-11-10 11:19:04,919] [    INFO][0m - overwrite_cache               : False[0m
+[32m[2023-11-10 11:19:04,919] [    INFO][0m - pad_to_max_length             : True[0m
+[32m[2023-11-10 11:19:04,919] [    INFO][0m - pattern                       : mrc[0m
+[32m[2023-11-10 11:19:04,919] [    INFO][0m - preprocessing_num_workers     : 32[0m
+[32m[2023-11-10 11:19:04,919] [    INFO][0m - return_entity_level_metrics   : True[0m
+[32m[2023-11-10 11:19:04,919] [    INFO][0m - rst_converter                 : None[0m
+[32m[2023-11-10 11:19:04,919] [    INFO][0m - target_size                   : 1000[0m
+[32m[2023-11-10 11:19:04,919] [    INFO][0m - task_name                     : ner[0m
+[32m[2023-11-10 11:19:04,919] [    INFO][0m - task_type                     : ner[0m
+[32m[2023-11-10 11:19:04,919] [    INFO][0m - train_log_file                : None[0m
+[32m[2023-11-10 11:19:04,919] [    INFO][0m - train_nshard                  : 16[0m
+[32m[2023-11-10 11:19:04,919] [    INFO][0m - use_segment_box               : False[0m
+[32m[2023-11-10 11:19:04,919] [    INFO][0m - [0m
+[32m[2023-11-10 11:19:05,059] [    INFO][0m - We are using (<class 'paddlenlp.transformers.ernie_layout.tokenizer.ErnieLayoutTokenizer'>, False) to load 'ernie-layoutx-base-uncased'.[0m
+[32m[2023-11-10 11:19:05,059] [    INFO][0m - Already cached /home/ubuntu/.paddlenlp/models/ernie-layoutx-base-uncased/vocab.txt[0m
+[32m[2023-11-10 11:19:05,059] [    INFO][0m - Already cached /home/ubuntu/.paddlenlp/models/ernie-layoutx-base-uncased/sentencepiece.bpe.model[0m
+[32m[2023-11-10 11:19:05,629] [    INFO][0m - tokenizer config file saved in /home/ubuntu/.paddlenlp/models/ernie-layoutx-base-uncased/tokenizer_config.json[0m
+[32m[2023-11-10 11:19:05,629] [    INFO][0m - Special tokens file saved in /home/ubuntu/.paddlenlp/models/ernie-layoutx-base-uncased/special_tokens_map.json[0m
+[32m[2023-11-10 11:19:05,630] [    INFO][0m - We are using <class 'paddlenlp.transformers.ernie_layout.modeling.ErnieLayoutForQuestionAnswering'> to load 'ernie-layoutx-base-uncased'.[0m
+[32m[2023-11-10 11:19:05,630] [    INFO][0m - Already cached /home/ubuntu/.paddlenlp/models/ernie-layoutx-base-uncased/model_state.pdparams[0m
+[32m[2023-11-10 11:19:05,630] [    INFO][0m - Loading weights file model_state.pdparams from cache at /home/ubuntu/.paddlenlp/models/ernie-layoutx-base-uncased/model_state.pdparams[0m
+[32m[2023-11-10 11:19:06,932] [    INFO][0m - Loaded weights file from disk, setting weights to model.[0m
+[32m[2023-11-10 11:19:08,393] [    INFO][0m - All model checkpoint weights were used when initializing ErnieLayoutForQuestionAnswering.
+[0m
+[33m[2023-11-10 11:19:08,394] [ WARNING][0m - Some weights of ErnieLayoutForQuestionAnswering were not initialized from the model checkpoint at ernie-layoutx-base-uncased and are newly initialized: ['qa_outputs.weight', 'embeddings.position_ids', 'qa_outputs.bias', 'visual.pixel_mean', 'visual.pixel_std']
+You should probably TRAIN this model on a down-stream task to be able to use it for predictions and inference.[0m
+[32m[2023-11-10 11:19:08,430] [    INFO][0m - spliting train dataset into 16 shard[0m
+[32m[2023-11-10 11:19:45,387] [    INFO][0m - ============================================================[0m
+[32m[2023-11-10 11:19:45,387] [    INFO][0m -     Training Configuration Arguments    [0m
+[32m[2023-11-10 11:19:45,387] [    INFO][0m - paddle commit id              : 3a1b1659a405a044ce806fbe027cc146f1193e6d[0m
+[32m[2023-11-10 11:19:45,387] [    INFO][0m - _no_sync_in_gradient_accumulation: True[0m
+[32m[2023-11-10 11:19:45,387] [    INFO][0m - adam_beta1                    : 0.9[0m
+[32m[2023-11-10 11:19:45,387] [    INFO][0m - adam_beta2                    : 0.999[0m
+[32m[2023-11-10 11:19:45,388] [    INFO][0m - adam_epsilon                  : 1e-08[0m
+[32m[2023-11-10 11:19:45,388] [    INFO][0m - amp_custom_black_list         : None[0m
+[32m[2023-11-10 11:19:45,388] [    INFO][0m - amp_custom_white_list         : None[0m
+[32m[2023-11-10 11:19:45,388] [    INFO][0m - amp_master_grad               : False[0m
+[32m[2023-11-10 11:19:45,388] [    INFO][0m - bf16                          : False[0m
+[32m[2023-11-10 11:19:45,388] [    INFO][0m - bf16_full_eval                : False[0m
+[32m[2023-11-10 11:19:45,388] [    INFO][0m - current_device                : gpu:1[0m
+[32m[2023-11-10 11:19:45,388] [    INFO][0m - data_parallel_rank            : 1[0m
+[32m[2023-11-10 11:19:45,388] [    INFO][0m - dataloader_drop_last          : False[0m
+[32m[2023-11-10 11:19:45,388] [    INFO][0m - dataloader_num_workers        : 0[0m
+[32m[2023-11-10 11:19:45,388] [    INFO][0m - dataset_rank                  : 1[0m
+[32m[2023-11-10 11:19:45,388] [    INFO][0m - dataset_world_size            : 4[0m
+[32m[2023-11-10 11:19:45,388] [    INFO][0m - device                        : gpu[0m
+[32m[2023-11-10 11:19:45,388] [    INFO][0m - disable_tqdm                  : False[0m
+[32m[2023-11-10 11:19:45,389] [    INFO][0m - do_eval                       : True[0m
+[32m[2023-11-10 11:19:45,389] [    INFO][0m - do_export                     : False[0m
+[32m[2023-11-10 11:19:45,389] [    INFO][0m - do_predict                    : False[0m
+[32m[2023-11-10 11:19:45,389] [    INFO][0m - do_train                      : True[0m
+[32m[2023-11-10 11:19:45,389] [    INFO][0m - eval_accumulation_steps       : None[0m
+[32m[2023-11-10 11:19:45,389] [    INFO][0m - eval_batch_size               : 6[0m
+[32m[2023-11-10 11:19:45,389] [    INFO][0m - eval_steps                    : 100[0m
+[32m[2023-11-10 11:19:45,389] [    INFO][0m - evaluation_strategy           : IntervalStrategy.STEPS[0m
+[32m[2023-11-10 11:19:45,389] [    INFO][0m - flatten_param_grads           : False[0m
+[32m[2023-11-10 11:19:45,389] [    INFO][0m - fp16                          : False[0m
+[32m[2023-11-10 11:19:45,389] [    INFO][0m - fp16_full_eval                : False[0m
+[32m[2023-11-10 11:19:45,389] [    INFO][0m - fp16_opt_level                : O1[0m
+[32m[2023-11-10 11:19:45,389] [    INFO][0m - gradient_accumulation_steps   : 1[0m
+[32m[2023-11-10 11:19:45,389] [    INFO][0m - greater_is_better             : True[0m
+[32m[2023-11-10 11:19:45,389] [    INFO][0m - hybrid_parallel_topo_order    : None[0m
+[32m[2023-11-10 11:19:45,390] [    INFO][0m - ignore_data_skip              : False[0m
+[32m[2023-11-10 11:19:45,390] [    INFO][0m - label_names                   : ['start_positions', 'end_positions'][0m
+[32m[2023-11-10 11:19:45,390] [    INFO][0m - lazy_data_processing          : True[0m
+[32m[2023-11-10 11:19:45,390] [    INFO][0m - learning_rate                 : 2e-05[0m
+[32m[2023-11-10 11:19:45,390] [    INFO][0m - load_best_model_at_end        : True[0m
+[32m[2023-11-10 11:19:45,390] [    INFO][0m - load_sharded_model            : False[0m
+[32m[2023-11-10 11:19:45,390] [    INFO][0m - local_process_index           : 1[0m
+[32m[2023-11-10 11:19:45,390] [    INFO][0m - local_rank                    : 1[0m
+[32m[2023-11-10 11:19:45,390] [    INFO][0m - log_level                     : -1[0m
+[32m[2023-11-10 11:19:45,390] [    INFO][0m - log_level_replica             : -1[0m
+[32m[2023-11-10 11:19:45,390] [    INFO][0m - log_on_each_node              : True[0m
+[32m[2023-11-10 11:19:45,390] [    INFO][0m - logging_dir                   : ./models/fidelity_save_100/runs/Nov10_11-18-59_ip-172-31-1-102[0m
+[32m[2023-11-10 11:19:45,390] [    INFO][0m - logging_first_step            : False[0m
+[32m[2023-11-10 11:19:45,390] [    INFO][0m - logging_steps                 : 500[0m
+[32m[2023-11-10 11:19:45,390] [    INFO][0m - logging_strategy              : IntervalStrategy.STEPS[0m
+[32m[2023-11-10 11:19:45,390] [    INFO][0m - lr_end                        : 1e-07[0m
+[32m[2023-11-10 11:19:45,391] [    INFO][0m - lr_scheduler_type             : SchedulerType.LINEAR[0m
+[32m[2023-11-10 11:19:45,391] [    INFO][0m - max_evaluate_steps            : -1[0m
+[32m[2023-11-10 11:19:45,391] [    INFO][0m - max_grad_norm                 : 1.0[0m
+[32m[2023-11-10 11:19:45,391] [    INFO][0m - max_steps                     : -1[0m
+[32m[2023-11-10 11:19:45,391] [    INFO][0m - metric_for_best_model         : anls[0m
+[32m[2023-11-10 11:19:45,391] [    INFO][0m - minimum_eval_times            : None[0m
+[32m[2023-11-10 11:19:45,391] [    INFO][0m - no_cuda                       : False[0m
+[32m[2023-11-10 11:19:45,391] [    INFO][0m - num_cycles                    : 0.5[0m
+[32m[2023-11-10 11:19:45,391] [    INFO][0m - num_train_epochs              : 4.0[0m
+[32m[2023-11-10 11:19:45,391] [    INFO][0m - optim                         : OptimizerNames.ADAMW[0m
+[32m[2023-11-10 11:19:45,391] [    INFO][0m - optimizer_name_suffix         : None[0m
+[32m[2023-11-10 11:19:45,391] [    INFO][0m - output_dir                    : ./models/fidelity_save_100/[0m
+[32m[2023-11-10 11:19:45,391] [    INFO][0m - overwrite_output_dir          : True[0m
+[32m[2023-11-10 11:19:45,391] [    INFO][0m - past_index                    : -1[0m
+[32m[2023-11-10 11:19:45,391] [    INFO][0m - per_device_eval_batch_size    : 6[0m
+[32m[2023-11-10 11:19:45,391] [    INFO][0m - per_device_train_batch_size   : 6[0m
+[32m[2023-11-10 11:19:45,392] [    INFO][0m - pipeline_parallel_config      : [0m
+[32m[2023-11-10 11:19:45,392] [    INFO][0m - pipeline_parallel_degree      : -1[0m
+[32m[2023-11-10 11:19:45,392] [    INFO][0m - pipeline_parallel_rank        : 0[0m
+[32m[2023-11-10 11:19:45,392] [    INFO][0m - power                         : 1.0[0m
+[32m[2023-11-10 11:19:45,392] [    INFO][0m - prediction_loss_only          : False[0m
+[32m[2023-11-10 11:19:45,392] [    INFO][0m - process_index                 : 1[0m
+[32m[2023-11-10 11:19:45,392] [    INFO][0m - recompute                     : False[0m
+[32m[2023-11-10 11:19:45,392] [    INFO][0m - remove_unused_columns         : True[0m
+[32m[2023-11-10 11:19:45,392] [    INFO][0m - report_to                     : ['visualdl'][0m
+[32m[2023-11-10 11:19:45,392] [    INFO][0m - resume_from_checkpoint        : None[0m
+[32m[2023-11-10 11:19:45,392] [    INFO][0m - run_name                      : ./models/fidelity_save_100/[0m
+[32m[2023-11-10 11:19:45,392] [    INFO][0m - save_on_each_node             : False[0m
+[32m[2023-11-10 11:19:45,392] [    INFO][0m - save_sharded_model            : False[0m
+[32m[2023-11-10 11:19:45,392] [    INFO][0m - save_steps                    : 100[0m
+[32m[2023-11-10 11:19:45,392] [    INFO][0m - save_strategy                 : IntervalStrategy.STEPS[0m
+[32m[2023-11-10 11:19:45,393] [    INFO][0m - save_total_limit              : 1[0m
+[32m[2023-11-10 11:19:45,393] [    INFO][0m - scale_loss                    : 32768[0m
+[32m[2023-11-10 11:19:45,393] [    INFO][0m - seed                          : 1000[0m
+[32m[2023-11-10 11:19:45,393] [    INFO][0m - sharding                      : [][0m
+[32m[2023-11-10 11:19:45,393] [    INFO][0m - sharding_degree               : -1[0m
+[32m[2023-11-10 11:19:45,393] [    INFO][0m - sharding_parallel_config      : [0m
+[32m[2023-11-10 11:19:45,393] [    INFO][0m - sharding_parallel_degree      : -1[0m
+[32m[2023-11-10 11:19:45,393] [    INFO][0m - sharding_parallel_rank        : 0[0m
+[32m[2023-11-10 11:19:45,393] [    INFO][0m - should_load_sharding_stage1_model: False[0m
+[32m[2023-11-10 11:19:45,393] [    INFO][0m - should_log                    : False[0m
+[32m[2023-11-10 11:19:45,393] [    INFO][0m - should_save                   : False[0m
+[32m[2023-11-10 11:19:45,393] [    INFO][0m - should_save_model_state       : False[0m
+[32m[2023-11-10 11:19:45,393] [    INFO][0m - should_save_sharding_stage1_model: False[0m
+[32m[2023-11-10 11:19:45,393] [    INFO][0m - skip_memory_metrics           : True[0m
+[32m[2023-11-10 11:19:45,393] [    INFO][0m - skip_profile_timer            : True[0m
+[32m[2023-11-10 11:19:45,394] [    INFO][0m - tensor_parallel_degree        : -1[0m
+[32m[2023-11-10 11:19:45,394] [    INFO][0m - tensor_parallel_rank          : 0[0m
+[32m[2023-11-10 11:19:45,394] [    INFO][0m - train_batch_size              : 6[0m
+[32m[2023-11-10 11:19:45,394] [    INFO][0m - use_hybrid_parallel           : False[0m
+[32m[2023-11-10 11:19:45,394] [    INFO][0m - warmup_ratio                  : 0.05[0m
+[32m[2023-11-10 11:19:45,394] [    INFO][0m - warmup_steps                  : 0[0m
+[32m[2023-11-10 11:19:45,394] [    INFO][0m - weight_decay                  : 0.05[0m
+[32m[2023-11-10 11:19:45,394] [    INFO][0m - weight_name_suffix            : None[0m
+[32m[2023-11-10 11:19:45,394] [    INFO][0m - world_size                    : 4[0m
+[32m[2023-11-10 11:19:45,394] [    INFO][0m - [0m
+[32m[2023-11-10 11:19:45,394] [    INFO][0m - The following columns in the training set  don't have a corresponding argument in `ErnieLayoutForQuestionAnswering.forward` and have been ignored: end_labels, token_to_orig_map, start_labels, tokens, questions, question_id, token_is_max_context, id. If end_labels, token_to_orig_map, start_labels, tokens, questions, question_id, token_is_max_context, id are not expected by `ErnieLayoutForQuestionAnswering.forward`,  you can safely ignore this message.[0m
+[32m[2023-11-10 11:19:51,658] [    INFO][0m - ***** Running training *****[0m
+[32m[2023-11-10 11:19:51,658] [    INFO][0m -   Num examples = 13,978[0m
+[32m[2023-11-10 11:19:51,659] [    INFO][0m -   Num Epochs = 4[0m
+[32m[2023-11-10 11:19:51,659] [    INFO][0m -   Instantaneous batch size per device = 6[0m
+[32m[2023-11-10 11:19:51,659] [    INFO][0m -   Total train batch size (w. parallel, distributed & accumulation) = 24[0m
+[32m[2023-11-10 11:19:51,659] [    INFO][0m -   Gradient Accumulation steps = 1[0m
+[32m[2023-11-10 11:19:51,659] [    INFO][0m -   Total optimization steps = 2,332[0m
+[32m[2023-11-10 11:19:51,659] [    INFO][0m -   Total num train samples = 55,912[0m
+[32m[2023-11-10 11:19:51,661] [    INFO][0m -   Number of trainable parameters = 281,693,122 (per device)[0m
+[32m[2023-11-10 11:22:19,703] [    INFO][0m - The following columns in the evaluation set  don't have a corresponding argument in `ErnieLayoutForQuestionAnswering.forward` and have been ignored: end_labels, token_to_orig_map, start_labels, tokens, questions, question_id, token_is_max_context, id. If end_labels, token_to_orig_map, start_labels, tokens, questions, question_id, token_is_max_context, id are not expected by `ErnieLayoutForQuestionAnswering.forward`,  you can safely ignore this message.[0m
+[32m[2023-11-10 11:22:20,158] [    INFO][0m - ***** Running Evaluation *****[0m
+[32m[2023-11-10 11:22:20,159] [    INFO][0m -   Num examples = 852[0m
+[32m[2023-11-10 11:22:20,159] [    INFO][0m -   Total prediction steps = 36[0m
+[32m[2023-11-10 11:22:20,159] [    INFO][0m -   Pre device batch size = 6[0m
+[32m[2023-11-10 11:22:20,159] [    INFO][0m -   Total Batch size = 24[0m
+[32m[2023-11-10 11:25:33,209] [    INFO][0m - The following columns in the evaluation set  don't have a corresponding argument in `ErnieLayoutForQuestionAnswering.forward` and have been ignored: end_labels, token_to_orig_map, start_labels, tokens, questions, question_id, token_is_max_context, id. If end_labels, token_to_orig_map, start_labels, tokens, questions, question_id, token_is_max_context, id are not expected by `ErnieLayoutForQuestionAnswering.forward`,  you can safely ignore this message.[0m
+[32m[2023-11-10 11:25:33,666] [    INFO][0m - ***** Running Evaluation *****[0m
+[32m[2023-11-10 11:25:33,666] [    INFO][0m -   Num examples = 852[0m
+[32m[2023-11-10 11:25:33,666] [    INFO][0m -   Total prediction steps = 36[0m
+[32m[2023-11-10 11:25:33,666] [    INFO][0m -   Pre device batch size = 6[0m
+[32m[2023-11-10 11:25:33,667] [    INFO][0m -   Total Batch size = 24[0m
+[32m[2023-11-10 11:28:43,935] [    INFO][0m - The following columns in the evaluation set  don't have a corresponding argument in `ErnieLayoutForQuestionAnswering.forward` and have been ignored: end_labels, token_to_orig_map, start_labels, tokens, questions, question_id, token_is_max_context, id. If end_labels, token_to_orig_map, start_labels, tokens, questions, question_id, token_is_max_context, id are not expected by `ErnieLayoutForQuestionAnswering.forward`,  you can safely ignore this message.[0m
+[32m[2023-11-10 11:28:44,383] [    INFO][0m - ***** Running Evaluation *****[0m
+[32m[2023-11-10 11:28:44,383] [    INFO][0m -   Num examples = 852[0m
+[32m[2023-11-10 11:28:44,383] [    INFO][0m -   Total prediction steps = 36[0m
+[32m[2023-11-10 11:28:44,383] [    INFO][0m -   Pre device batch size = 6[0m
+[32m[2023-11-10 11:28:44,383] [    INFO][0m -   Total Batch size = 24[0m
+[32m[2023-11-10 11:31:43,866] [    INFO][0m - The following columns in the evaluation set  don't have a corresponding argument in `ErnieLayoutForQuestionAnswering.forward` and have been ignored: end_labels, token_to_orig_map, start_labels, tokens, questions, question_id, token_is_max_context, id. If end_labels, token_to_orig_map, start_labels, tokens, questions, question_id, token_is_max_context, id are not expected by `ErnieLayoutForQuestionAnswering.forward`,  you can safely ignore this message.[0m
+[32m[2023-11-10 11:31:44,313] [    INFO][0m - ***** Running Evaluation *****[0m
+[32m[2023-11-10 11:31:44,314] [    INFO][0m -   Num examples = 852[0m
+[32m[2023-11-10 11:31:44,314] [    INFO][0m -   Total prediction steps = 36[0m
+[32m[2023-11-10 11:31:44,314] [    INFO][0m -   Pre device batch size = 6[0m
+[32m[2023-11-10 11:31:44,314] [    INFO][0m -   Total Batch size = 24[0m
+[32m[2023-11-10 11:34:44,236] [    INFO][0m - The following columns in the evaluation set  don't have a corresponding argument in `ErnieLayoutForQuestionAnswering.forward` and have been ignored: end_labels, token_to_orig_map, start_labels, tokens, questions, question_id, token_is_max_context, id. If end_labels, token_to_orig_map, start_labels, tokens, questions, question_id, token_is_max_context, id are not expected by `ErnieLayoutForQuestionAnswering.forward`,  you can safely ignore this message.[0m
+[32m[2023-11-10 11:34:44,685] [    INFO][0m - ***** Running Evaluation *****[0m
+[32m[2023-11-10 11:34:44,685] [    INFO][0m -   Num examples = 852[0m
+[32m[2023-11-10 11:34:44,685] [    INFO][0m -   Total prediction steps = 36[0m
+[32m[2023-11-10 11:34:44,685] [    INFO][0m -   Pre device batch size = 6[0m
+[32m[2023-11-10 11:34:44,685] [    INFO][0m -   Total Batch size = 24[0m
+[32m[2023-11-10 11:37:43,820] [    INFO][0m - The following columns in the evaluation set  don't have a corresponding argument in `ErnieLayoutForQuestionAnswering.forward` and have been ignored: end_labels, token_to_orig_map, start_labels, tokens, questions, question_id, token_is_max_context, id. If end_labels, token_to_orig_map, start_labels, tokens, questions, question_id, token_is_max_context, id are not expected by `ErnieLayoutForQuestionAnswering.forward`,  you can safely ignore this message.[0m
+[32m[2023-11-10 11:37:44,269] [    INFO][0m - ***** Running Evaluation *****[0m
+[32m[2023-11-10 11:37:44,269] [    INFO][0m -   Num examples = 852[0m
+[32m[2023-11-10 11:37:44,269] [    INFO][0m -   Total prediction steps = 36[0m
+[32m[2023-11-10 11:37:44,269] [    INFO][0m -   Pre device batch size = 6[0m
+[32m[2023-11-10 11:37:44,270] [    INFO][0m -   Total Batch size = 24[0m
+[32m[2023-11-10 11:40:43,887] [    INFO][0m - The following columns in the evaluation set  don't have a corresponding argument in `ErnieLayoutForQuestionAnswering.forward` and have been ignored: end_labels, token_to_orig_map, start_labels, tokens, questions, question_id, token_is_max_context, id. If end_labels, token_to_orig_map, start_labels, tokens, questions, question_id, token_is_max_context, id are not expected by `ErnieLayoutForQuestionAnswering.forward`,  you can safely ignore this message.[0m
+[32m[2023-11-10 11:40:44,344] [    INFO][0m - ***** Running Evaluation *****[0m
+[32m[2023-11-10 11:40:44,344] [    INFO][0m -   Num examples = 852[0m
+[32m[2023-11-10 11:40:44,344] [    INFO][0m -   Total prediction steps = 36[0m
+[32m[2023-11-10 11:40:44,344] [    INFO][0m -   Pre device batch size = 6[0m
+[32m[2023-11-10 11:40:44,344] [    INFO][0m -   Total Batch size = 24[0m
+[32m[2023-11-10 11:43:43,920] [    INFO][0m - The following columns in the evaluation set  don't have a corresponding argument in `ErnieLayoutForQuestionAnswering.forward` and have been ignored: end_labels, token_to_orig_map, start_labels, tokens, questions, question_id, token_is_max_context, id. If end_labels, token_to_orig_map, start_labels, tokens, questions, question_id, token_is_max_context, id are not expected by `ErnieLayoutForQuestionAnswering.forward`,  you can safely ignore this message.[0m
+[32m[2023-11-10 11:43:44,369] [    INFO][0m - ***** Running Evaluation *****[0m
+[32m[2023-11-10 11:43:44,370] [    INFO][0m -   Num examples = 852[0m
+[32m[2023-11-10 11:43:44,370] [    INFO][0m -   Total prediction steps = 36[0m
+[32m[2023-11-10 11:43:44,370] [    INFO][0m -   Pre device batch size = 6[0m
+[32m[2023-11-10 11:43:44,370] [    INFO][0m -   Total Batch size = 24[0m
+[32m[2023-11-10 11:46:43,783] [    INFO][0m - The following columns in the evaluation set  don't have a corresponding argument in `ErnieLayoutForQuestionAnswering.forward` and have been ignored: end_labels, token_to_orig_map, start_labels, tokens, questions, question_id, token_is_max_context, id. If end_labels, token_to_orig_map, start_labels, tokens, questions, question_id, token_is_max_context, id are not expected by `ErnieLayoutForQuestionAnswering.forward`,  you can safely ignore this message.[0m
+[32m[2023-11-10 11:46:44,233] [    INFO][0m - ***** Running Evaluation *****[0m
+[32m[2023-11-10 11:46:44,233] [    INFO][0m -   Num examples = 852[0m
+[32m[2023-11-10 11:46:44,234] [    INFO][0m -   Total prediction steps = 36[0m
+[32m[2023-11-10 11:46:44,234] [    INFO][0m -   Pre device batch size = 6[0m
+[32m[2023-11-10 11:46:44,234] [    INFO][0m -   Total Batch size = 24[0m
+[32m[2023-11-10 11:49:43,906] [    INFO][0m - The following columns in the evaluation set  don't have a corresponding argument in `ErnieLayoutForQuestionAnswering.forward` and have been ignored: end_labels, token_to_orig_map, start_labels, tokens, questions, question_id, token_is_max_context, id. If end_labels, token_to_orig_map, start_labels, tokens, questions, question_id, token_is_max_context, id are not expected by `ErnieLayoutForQuestionAnswering.forward`,  you can safely ignore this message.[0m
+[32m[2023-11-10 11:49:44,362] [    INFO][0m - ***** Running Evaluation *****[0m
+[32m[2023-11-10 11:49:44,362] [    INFO][0m -   Num examples = 852[0m
+[32m[2023-11-10 11:49:44,362] [    INFO][0m -   Total prediction steps = 36[0m
+[32m[2023-11-10 11:49:44,362] [    INFO][0m -   Pre device batch size = 6[0m
+[32m[2023-11-10 11:49:44,362] [    INFO][0m -   Total Batch size = 24[0m

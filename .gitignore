@@ -1,0 +1,14 @@
+__pycache__/
+.ipynb_checkpoints/
+env/
+output/
+model/
+dataset/
+*.csv
+doc15k/
+*.pdiparams
+*.model
+*.pdparams
+*.zip
+switch_cuda/
+fidelity/
